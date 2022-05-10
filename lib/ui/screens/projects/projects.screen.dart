@@ -6,7 +6,9 @@ class ProjectsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: const Text("Projects"),
+      child: const Text(
+        "Projects",
+      ),
       color: Colors.amber,
     );
   }
