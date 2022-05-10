@@ -7,7 +7,7 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text("Search"),
+      child: const Text("Search"),
       color: ETColors.limeGreen,
     );
   }
