@@ -4,6 +4,9 @@
 .flutter-plugins
 .flutter-plugins-dependencies
 
+# firebase caching
+.firebase
+
 # Files and directories created by pub
 .dart_tool/
 .packages
