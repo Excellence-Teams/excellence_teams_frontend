@@ -1,4 +1,4 @@
-name: exzellenz_teams_frontend
+name: excellence_teams_frontend
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 0.0.1
 
 environment:
   sdk: ">=2.15.1 <3.0.0"
@@ -34,6 +34,10 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  get_it: ^7.2.0
+  rx_shared_preferences: ^2.3.0
+  provider: ^6.0.2
+  auto_route: ^4.0.0
 
 dev_dependencies:
   flutter_test:
@@ -45,6 +49,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
+  freezed: ^2.0.3
+  build_runner: ^2.1.10
+  auto_route_generator: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -87,3 +94,25 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+  fonts:
+    - family: Mont
+      fonts: 
+        - asset: assets/fonts/mont/Mont-Thin.otf
+          weight: 100
+        - asset: assets/fonts/mont/Mont-ExtraLight.otf
+          weight: 200
+        - asset: assets/fonts/mont/Mont-Light.otf
+          weight: 300
+        - asset: assets/fonts/mont/Mont-Book.otf
+          weight: 400
+        - asset: assets/fonts/mont/Mont-Regular.otf
+          weight: 500
+        - asset: assets/fonts/mont/Mont-SemiBold.otf
+          weight: 600
+        - asset: assets/fonts/mont/Mont-Bold.otf
+          weight: 700
+        - asset: assets/fonts/mont/Mont-Heavy.otf
+          weight: 800
+        - asset: assets/fonts/mont/Mont-Black.otf
+          weight: 900
