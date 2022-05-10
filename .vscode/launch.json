@@ -5,21 +5,33 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "exzellenz_teams_frontend",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "exzellenz_teams_frontend (profile mode)",
+            "name": "web chrome",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "args": [
+                "-d",
+                "chrome"
+            ]
         },
         {
-            "name": "exzellenz_teams_frontend (release mode)",
+            "name": "web chrome (profile mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "profile",
+            "args": [
+                "-d",
+                "chrome"
+            ]
+        },
+        {
+            "name": "web chrome (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "args": [
+                "-d",
+                "chrome"
+            ]
         }
     ]
 }
