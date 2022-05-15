@@ -20,7 +20,7 @@ class ETTopNavigationBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           InkWell(
-            child: _tabText("SEARCH"),
+            child: _tabText("Search"),
             onTap: () => tabsRouter.setActiveIndex(0),
           ),
           InkWell(
