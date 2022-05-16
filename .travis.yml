@@ -1,3 +1,10 @@
+env:
+  global:
+    - DARTSDK=./flutter/bin/cache/dart-sdk/bin
+    - FLUTTER=./flutter/bin/flutter
+    - FLUTTER_GITHUB=https://github.com/flutter/flutter.git
+    - PACKAGES=packages
+
 os:
 - linux
 sudo: false
@@ -9,28 +16,28 @@ addons:
     - libstdc++6
     - fonts-droid-fallback
 
+install:
+  - git clone $FLUTTER_GITHUB -b stable
+  - $FLUTTER doctor
+  - $FLUTTER pub get
+
 jobs: 
   include:
     - stage: test 
-      before_script:
-        - git clone https://github.com/flutter/flutter.git -b stable
-        - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
-        - flutter doctor
       script: 
         - echo 'Starting CI'
         - echo 'Starting Tests 🔬'
         - echo 'Install dependencies ⬇️'
-        - flutter pub get
         - echo 'Analyze project source ⛓'
-        - flutter analyze
+        - $FLUTTER analyze
         - echo 'Run tests 📊'
-        - flutter test
+        - $FLUTTER test
         - echo '✅ all checks completed => ready to merge! 🥳'
 
     - stage: deploy
       script: 
         - npm install -g firebase-tools
-        - flutter build web
+        - $FLUTTER build web
         - firebase deploy --token "n/ulSiyzILKPegCv0Xw19uqM9WCAJsv1UPUrxrwjiloe7umUA6XtyQmdLF14253omXF3wavACSTMW7InrhQD0jMbeYRxYgtrCN1mNYoDTf3v9bkR/UWJoQMI6stL/sd5z6Wx98iRzzTO/cVFlPwnSmSTq7q8YCIEE9i9XIT0gyjD/pkkcD27R6O5IZPvKj/1IvlLR7obKEwU2MF6ftP50WTjeXPdcLCEp9DfoyzYx3yUwApvHTn8jXMs3pCdjjgFK+My/r47eamiPivee5OlzzohK51oER3akZiZuhQdJe3BMYOcnhCQP96GVOvj53tst2jUzvncykV1a/mPXlXLwGiB9RWKpbu/9B3Icvsz+LsmP5QvTbjR0BQ1EGYhf3ThzJRw/7AxxiGRSrsZrVNBGFlSE4pJUeRfS/SfdQ2vvV1GlIF5RKzkUEJlUIj2koJqXyZ+xmjPk7VcazWQYGwmzJ64l8AosE96vtLRp1sM1T6teOVmMBCKifY/ochJL5E0ATklidUcy20DyOYCjDmmACwcnw2kRK/xjE6R7MUkc1RKv4uV7gGjWH5dkBSAh+fFVrKdo6AwYS5+sEghr5azGKy4P/DQu3qzATnn+Z0LNz9BL9Du1xYJLC1d/dRIluPqVzULWEk0KRj+xiqfzw42nH4u8HCAfPhV+Kdp7jzpS9c="
 
 after_success:
