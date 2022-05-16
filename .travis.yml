@@ -2,6 +2,7 @@ env:
   global:
     - DARTSDK=./flutter/bin/cache/dart-sdk/bin
     - FLUTTER=./flutter/bin/flutter
+    - FLUTTER_UP=../flutter/bin/flutter
     - FLUTTER_GITHUB=https://github.com/flutter/flutter.git
     - PACKAGES=packages
 
@@ -31,7 +32,7 @@ jobs:
         - echo 'Analyze project source ⛓'
         - $FLUTTER analyze
         - echo 'Run tests 📊'
-        - $FLUTTER test
+        - $FLUTTER_UP test
         - echo '✅ all checks completed => ready to merge! 🥳'
 
     - stage: deploy
