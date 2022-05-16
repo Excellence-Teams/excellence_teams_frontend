@@ -7,7 +7,7 @@ env:
     - PACKAGES=packages
 
 os:
-- linux
+- osx
 sudo: false
 addons:
   apt:
