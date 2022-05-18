@@ -1,2 +1,2 @@
-# exzellenz-teams-front
+# Frontend Repository for Excellence Teams
 
