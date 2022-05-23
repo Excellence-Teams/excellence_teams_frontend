@@ -10,13 +10,13 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     const double breakpoint = 1000;
-    bool isChecked = false;
+    
     const int paneProportion = 50;
 
     if (breakpoint < size.width) {
       return Flex(
         direction: Axis.horizontal,
-        children: [
+        children: const [
           LoginLeftSide(paneProportion: paneProportion),
           LoginRightSide(paneProportion: paneProportion),
         ],
@@ -24,28 +24,11 @@ class LoginScreen extends StatelessWidget {
     } else {
       return Flex(
         direction: Axis.horizontal,
-        children: [
+        children: const [
           LoginLeftSide(paneProportion: paneProportion),
         ],
       );
     }
-    return Flex(
-      direction: Axis.horizontal,
-      children: [
-        Flexible(
-          flex: 100,
-          child: Container(
-            color: ETColors.green,
-            child: const Center(
-              child: Text(
-                'Pane 3',
-                style: ETTextStyles.montBook,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
   }
 }
 
