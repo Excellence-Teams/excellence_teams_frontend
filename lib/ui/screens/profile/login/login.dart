@@ -1,111 +1,31 @@
+import 'package:excellence_teams_frontend/ui/resources/colors.dart';
+import 'package:excellence_teams_frontend/ui/resources/text_styles.dart';
+
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final double breakpoint = 1000;
-  bool isChecked = false;
-  final int paneProportion = 50;
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    const double breakpoint = 1000;
+    bool isChecked = false;
+    const int paneProportion = 50;
 
     if (breakpoint < size.width) {
       return Flex(
         direction: Axis.horizontal,
         children: [
-          Flexible(
-            flex: paneProportion,
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  alignment: Alignment.center,
-                  color: Colors.white,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text("Welcome back",
-                            style: TextStyle(
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                            )),
-                        Text("Welcome back! Please enter your details.",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            )),
-                        SizedBox(
-                          height: 32,
-                        ),
-                        SizedBox(
-                          width: 400,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.blue, width: 1),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.grey, width: 1.0),
-                              ),
-                              hintText: 'Email',
-                              labelText: 'Email',
-                              suffixIcon: Icon(
-                                Icons.mail_outline,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 14,
-                        ),
-                        SizedBox(
-                          width: 400,
-                          child: TextField(
-                            obscureText: true,
-
-
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.blue, width: 1),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.grey, width: 1.0),
-                              ),
-                              
-                              hintText: 'Password',
-                              labelText: 'Password',
-                              suffixIcon: Icon(
-                                Icons.lock,
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        
-                        
-                      ]),
-                )),
-          ),
-          Flexible(
-            flex: 100 - paneProportion,
-            child: Container(
-              color: Colors.grey[300],
-              child: const Center(
-                child: Text('Hier könnte Ihre Werbung stehen!'),
-              ),
-            ),
-          ),
+          LoginLeftSide(paneProportion: paneProportion),
+          LoginRightSide(paneProportion: paneProportion),
+        ],
+      );
+    } else {
+      return Flex(
+        direction: Axis.horizontal,
+        children: [
+          LoginLeftSide(paneProportion: paneProportion),
         ],
       );
     }
@@ -115,13 +35,115 @@ class _LoginScreenState extends State<LoginScreen> {
         Flexible(
           flex: 100,
           child: Container(
-            color: Colors.green[200],
+            color: ETColors.green,
             child: const Center(
-              child: Text('Pane 3'),
+              child: Text(
+                'Pane 3',
+                style: ETTextStyles.montBook,
+              ),
             ),
           ),
         ),
       ],
+    );
+  }
+}
+
+class LoginRightSide extends StatelessWidget {
+  const LoginRightSide({
+    Key? key,
+    required this.paneProportion,
+  }) : super(key: key);
+
+  final int paneProportion;
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      flex: 100 - paneProportion,
+      child: Container(
+        color: ETColors.grey,
+        child: const Center(
+          child: Text('Hier könnte Ihre Werbung stehen!'),
+        ),
+      ),
+    );
+  }
+}
+
+class LoginLeftSide extends StatelessWidget {
+  const LoginLeftSide({
+    Key? key,
+    required this.paneProportion,
+  }) : super(key: key);
+
+  final int paneProportion;
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      flex: paneProportion,
+      child: Align(
+          alignment: Alignment.centerLeft,
+          child: Container(
+            alignment: Alignment.center,
+            color: ETColors.white,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    "Welcome back",
+                    style: ETTextStyles.montTitle,
+                  ),
+                  Text(
+                    "Welcome back! Please enter your details.",
+                    style: ETTextStyles.montBook,
+                  ),
+                  SizedBox(height: 32),
+                  SizedBox(
+                    width: 400,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.green, width: 1),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: ETColors.grey, width: 1.0),
+                        ),
+                        hintText: 'Email',
+                        labelText: 'Email',
+                        suffixIcon: Icon(
+                          Icons.mail_outline,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 14),
+                  SizedBox(
+                    width: 400,
+                    child: TextField(
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: ETColors.green, width: 1),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: ETColors.grey, width: 1.0),
+                        ),
+                        hintText: 'Password',
+                        labelText: 'Password',
+                        suffixIcon: Icon(
+                          Icons.lock,
+                        ),
+                      ),
+                    ),
+                  ),
+                ]),
+          )),
     );
   }
 }

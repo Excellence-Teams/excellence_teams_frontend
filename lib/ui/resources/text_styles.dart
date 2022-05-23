@@ -74,4 +74,12 @@ class ETTextStyles {
     fontWeight: FontWeight.w900,
     fontStyle: FontStyle.normal,
   );
+    static const TextStyle montTitle = TextStyle(
+    decoration: TextDecoration.none,
+    color: ETColors.black,
+    fontSize: 32,
+    fontFamily: "Mont",
+    fontWeight: FontWeight.w900,
+    fontStyle: FontStyle.normal,
+  );
 }
