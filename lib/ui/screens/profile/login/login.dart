@@ -54,7 +54,7 @@ class LoginRightSide extends StatelessWidget {
   }
 }
 
-class LoginLeftSide extends StatelessWidget {
+class LoginLeftSide extends StatefulWidget {
   const LoginLeftSide({
     Key? key,
     required this.paneProportion,
@@ -63,9 +63,15 @@ class LoginLeftSide extends StatelessWidget {
   final int paneProportion;
 
   @override
+  State<LoginLeftSide> createState() => _LoginLeftSideState();
+}
+
+class _LoginLeftSideState extends State<LoginLeftSide> {
+  @override
   Widget build(BuildContext context) {
+    bool? isChecked = false;
     return Flexible(
-      flex: paneProportion,
+      flex: widget.paneProportion,
       child: Align(
           alignment: Alignment.centerLeft,
           child: Container(
@@ -74,17 +80,17 @@ class LoginLeftSide extends StatelessWidget {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
+                children: [
+                  const Text(
                     "Welcome back",
                     style: ETTextStyles.montTitle,
                   ),
-                  Text(
+                  const Text(
                     "Welcome back! Please enter your details.",
                     style: ETTextStyles.montBook,
                   ),
-                  SizedBox(height: 32),
-                  SizedBox(
+                  const SizedBox(height: 32),
+                  const SizedBox(
                     width: 400,
                     child: TextField(
                       decoration: InputDecoration(
@@ -103,8 +109,8 @@ class LoginLeftSide extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 14),
-                  SizedBox(
+                  const SizedBox(height: 14),
+                  const SizedBox(
                     width: 400,
                     child: TextField(
                       obscureText: true,
@@ -125,8 +131,23 @@ class LoginLeftSide extends StatelessWidget {
                       ),
                     ),
                   ),
-                ]),
+                  
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [Checkbox(
+                    value: isChecked,
+                      onChanged: (value) {
+                        setState(() {
+                          isChecked = value!;
+                        });
+                      },
+                    ),
+                    const Text("Remember my login"),
+                  ]
+              ),
+            ]),
           )),
+
     );
   }
 }
