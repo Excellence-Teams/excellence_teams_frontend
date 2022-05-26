@@ -1,6 +1,6 @@
 name: Continuous Integration
 
-on: 
+on:
   pull_request:
     branches:
       - main
@@ -8,12 +8,15 @@ on:
       - "**/README.md"
       - "assets/"
 
-jobs: 
+jobs:
+  Static-Code-Check:
+    concurrency:
+      group: ${{ github.ref }}
+      cancel-in-progress: true
 
-  CI-Setup:
     runs-on: macos-12
 
-    steps: 
+    steps:
       - name: Checkout  🛎️
         uses: actions/checkout@v2
 
@@ -32,12 +35,6 @@ jobs:
       - name: Install dependencies ⬇️
         run: flutter pub get
 
-  Static-Code-Check:
-    needs: [CI-Setup]
-
-    runs-on: macos-12
-
-    steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
 
       - name: Fix code formatting ⚙️
@@ -48,4 +45,41 @@ jobs:
 
       - run: echo "✅ static code check completed"
 
-  
+  Tests:
+    concurrency:
+      group: ${{ github.ref }}
+      cancel-in-progress: true
+
+    runs-on: macos-12
+
+    steps:
+      - name: Checkout  🛎️
+        uses: actions/checkout@v2
+
+      - name: Install Dart SDK 🔧
+        uses: dart-lang/setup-dart@v1.3
+
+      - name: Install Flutter SDK 🔧
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.0.0"
+          channel: "stable"
+
+      - name: Flutter clean 🧹
+        run: flutter clean & flutter pub cache repair
+
+      - name: Install dependencies ⬇️
+        run: flutter pub get
+
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+
+      - name: Fix code formatting ⚙️
+        run: dart format --fix **/*.dart
+
+      - name: Analyze project source ⛓
+        run: flutter analyze
+
+      - name: Run tests 📊
+        run: flutter test
+
+      - run: echo "✅ all tests completed"
