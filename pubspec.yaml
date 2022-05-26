@@ -38,6 +38,7 @@ dependencies:
   rx_shared_preferences: ^2.3.0
   provider: ^6.0.2
   auto_route: ^4.0.0
+  sentry_flutter: ^6.5.1
 
 dev_dependencies:
   flutter_test:
