@@ -10,10 +10,9 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    const double breakpoint = 1000;
-    
-    const int paneProportion = 50;
+    final size = MediaQuery.of(context).size;
+    const breakpoint = 1000;
+    const paneProportion = 50;
 
     if (breakpoint < size.width) {
       return Flex(
@@ -69,22 +68,20 @@ class LoginLeftSide extends StatefulWidget {
 }
 
 class _LoginLeftSideState extends State<LoginLeftSide> {
+  bool isChecked = false;
+
   @override
   Widget build(BuildContext context) {
-    bool? isChecked = false;
     return Flexible(
-      flex: widget.paneProportion,
-
-      child: Column(
+        flex: widget.paneProportion,
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   const Text(
                     "Welcome back",
                     style: ETTextStyles.montTitle,
@@ -102,7 +99,8 @@ class _LoginLeftSideState extends State<LoginLeftSide> {
                           borderSide: BorderSide(color: Colors.green, width: 1),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: ETColors.grey, width: 1.0),
+                          borderSide:
+                              BorderSide(color: ETColors.grey, width: 1.0),
                         ),
                         hintText: 'Email',
                         labelText: 'Email',
@@ -141,66 +139,64 @@ class _LoginLeftSideState extends State<LoginLeftSide> {
                           value: isChecked,
                           onChanged: (value) {
                             setState(() {
-                              
+                              // TODO integrate viewmodel here
+                              // TODO use isChecked value
+                              isChecked = !isChecked;
                             });
                           },
                         ),
                         const SizedBox(
                           child: Text("Remember me",
-                          style: ETTextStyles.montRegular),
+                              style: ETTextStyles.montRegular),
                         ),
                         const Padding(
-                          padding: EdgeInsets.fromLTRB(165,0,0,0),
-                            child: Text("Forgot password?", 
+                          padding: EdgeInsets.fromLTRB(165, 0, 0, 0),
+                          child: Text("Forgot password?",
                               style: ETTextStyles.montRegular),
                         )
                       ],
                     ),
                   ),
                   const SizedBox(height: 14),
-                ]
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: ETColors.black,
-                      minimumSize: const Size(240, 40),
-                      maximumSize: const Size(240, 40),
-                      shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6)),
+                ]),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: ETColors.black,
+                        minimumSize: const Size(240, 40),
+                        maximumSize: const Size(240, 40),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6)),
+                      ),
+                      child:
+                          const Text('Sign in', style: ETTextStyles.montWhite),
+                      onPressed: () {},
                     ),
-                    child: const Text('Sign in', style: ETTextStyles.montWhite),
-                    onPressed: () {},
-                  ),
-                  const SizedBox(height: 14),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: ETColors.green,
-                      minimumSize: const Size(240, 40),
-                      maximumSize: const Size(240, 40),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6)),
+                    const SizedBox(height: 14),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: ETColors.green,
+                        minimumSize: const Size(240, 40),
+                        maximumSize: const Size(240, 40),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6)),
+                      ),
+                      child: const Text('Create a new Account',
+                          style: ETTextStyles.montWhite),
+                      onPressed: () {},
                     ),
-                    child: const Text('Create a new Account', style: ETTextStyles.montWhite),
-                    onPressed: () {},
-                  ),
-                ],
-
-
-
-              ),
-            ],
-          ),
-        ],
-      )
-      
-    );
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ));
   }
 }
