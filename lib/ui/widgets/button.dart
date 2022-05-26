@@ -1,4 +1,5 @@
 import 'package:excellence_teams_frontend/ui/resources/resources.dart';
+import 'package:excellence_teams_frontend/ui/widgets/text.dart';
 import 'package:flutter/material.dart';
 
 class ETButton extends StatelessWidget {
@@ -31,7 +32,7 @@ class ETButton extends StatelessWidget {
         ),
       ),
       onPressed: onClick,
-      child: Text(
+      child: ETText(
         label,
         style: ETTextStyles.montSemiBold.copyWith(
           color: labelColor,
