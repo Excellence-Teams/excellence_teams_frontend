@@ -27,9 +27,6 @@ jobs:
           flutter-version: "3.0.0"
           channel: "stable"
 
-      - name: Flutter clean 🧹
-        run: flutter clean & flutter pub cache repair
-
       - name: Install dependencies ⬇️
         run: flutter pub get
 
@@ -40,3 +37,5 @@ jobs:
         run: flutter analyze
 
       - run: echo "✅ static code check completed"
+
+  
