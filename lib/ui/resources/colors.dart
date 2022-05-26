@@ -9,4 +9,5 @@ class ETColors {
   static const green = Color.fromRGBO(101, 224, 169, 1);
   static const wine = Color.fromRGBO(148, 52, 37, 1);
   static const lightRed = Color.fromRGBO(224, 118, 101, 1);
+  static const blue = Color.fromRGBO(0, 0, 255, 1);
 }
