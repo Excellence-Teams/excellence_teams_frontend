@@ -43,6 +43,9 @@ jobs:
       - name: Analyze project source ⛓
         run: flutter analyze
 
+      - name: Build a version 🏗
+        run: flutter build web
+
       - run: echo "✅ static code check completed"
 
   Tests:
@@ -83,3 +86,6 @@ jobs:
         run: flutter test
 
       - run: echo "✅ all tests completed"
+
+    
+  
