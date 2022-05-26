@@ -35,7 +35,7 @@ class LoginRightSide extends StatelessWidget {
       child: Container(
         color: ETColors.grey,
         child: const Center(
-          child: Text('Hier könnte Ihre Werbung stehen!'),
+          child: ETText('Hier könnte Ihre Werbung stehen!'),
         ),
       ),
     );
@@ -124,7 +124,8 @@ class _LoginLeftSideState extends State<LoginLeftSide> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 165),
-                        child: Text(
+                        // TODO add Gesture Detection here
+                        child: ETText(
                           "Forgot password?",
                           style: ETTextStyles.montRegular.copyWith(
                             decoration: TextDecoration.underline,

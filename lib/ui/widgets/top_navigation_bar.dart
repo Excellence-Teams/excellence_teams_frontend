@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:excellence_teams_frontend/ui/resources/colors.dart';
 import 'package:excellence_teams_frontend/ui/resources/text_styles.dart';
+import 'package:excellence_teams_frontend/ui/widgets/text.dart';
 import 'package:flutter/material.dart';
 
 class ETTopNavigationBar extends StatelessWidget {
@@ -37,10 +38,12 @@ class ETTopNavigationBar extends StatelessWidget {
   }
 
   Widget _tabText(String text) {
-    return Text(
+    return ETText(
       text,
-      style: ETTextStyles.montSemiBold
-          .copyWith(color: ETColors.black, fontSize: 25),
+      style: ETTextStyles.montSemiBold.copyWith(
+        color: ETColors.black,
+        fontSize: 25,
+      ),
     );
   }
 }
