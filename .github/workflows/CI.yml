@@ -10,10 +10,6 @@ on:
 
 jobs:
   Static-Code-Check:
-    concurrency:
-      group: ${{ github.ref }}
-      cancel-in-progress: true
-
     runs-on: macos-12
 
     steps:
@@ -49,10 +45,6 @@ jobs:
       - run: echo "✅ static code check completed"
 
   Tests:
-    concurrency:
-      group: ${{ github.ref }}
-      cancel-in-progress: true
-
     runs-on: macos-12
 
     steps:
