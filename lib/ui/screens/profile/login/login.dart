@@ -14,22 +14,13 @@ class LoginScreen extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     const breakpoint = 1000;
 
-    if (breakpoint < size.width) {
-      return Flex(
-        direction: Axis.horizontal,
-        children: const [
-          LoginLeftSide(),
-          LoginRightSide(),
-        ],
-      );
-    } else {
-      return Flex(
-        direction: Axis.horizontal,
-        children: const [
-          LoginLeftSide(),
-        ],
-      );
-    }
+    return Flex(
+      direction: Axis.horizontal,
+      children: [
+        const LoginLeftSide(),
+        if (breakpoint < size.width) const LoginRightSide(),
+      ],
+    );
   }
 }
 
