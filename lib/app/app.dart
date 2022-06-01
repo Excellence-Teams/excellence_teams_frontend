@@ -1,21 +1,37 @@
-import 'package:excellence_teams_frontend/routes/router.gr.dart';
+import 'package:excellence_teams_frontend/data/repository/authentication.repository.dart';
+import 'package:excellence_teams_frontend/services/services.dart';
 import 'package:excellence_teams_frontend/ui/resources/custom_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 
 class ExcellenceTeamsApp extends StatelessWidget {
-  ExcellenceTeamsApp({Key? key}) : super(key: key);
-
-  final _appRouter = AppRouter();
+  const ExcellenceTeamsApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Excellence Teams',
-      routerDelegate: _appRouter.delegate(
-          navigatorObservers: () => [SentryNavigatorObserver()]),
-      routeInformationParser: _appRouter.defaultRouteParser(),
-      theme: ETTheme.defaultTheme,
+    final router = getIt<AppRouter>();
+
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => AuthenticationRepository(
+            api: getIt<Api>(),
+            authService: getIt<FirebaseAuthenticationService>(),
+          ),
+        ),
+      ],
+      builder: (context, _) {
+        // Api needs the authenticationRepository
+        getIt<Api>().authenticationRepository =
+            context.read<AuthenticationRepository>();
+
+        return MaterialApp.router(
+          title: 'Excellence Teams',
+          theme: ETTheme.defaultTheme,
+          routerDelegate: router.delegate(
+              navigatorObservers: () => [SentryNavigatorObserver()]),
+          routeInformationParser: router.defaultRouteParser(),
+        );
+      },
     );
   }
 }
