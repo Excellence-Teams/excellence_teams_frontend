@@ -19,6 +19,7 @@ class AuthenticationRepository extends RxCubit<AuthenticationStatus> {
         _api = api,
         super(const AuthenticationStatus.signedOut());
 
+  // ignore: unused_element
   Future<void> _loadStoredToken() async {
     // TODO load stored jwt token
   }
