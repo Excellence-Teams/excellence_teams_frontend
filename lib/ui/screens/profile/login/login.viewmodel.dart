@@ -59,6 +59,7 @@ class LoginViewModel extends RxCubit<LoginState> {
 
 @freezed
 class LoginState with _$LoginState {
+  // TODO add extra state if not yet checked for a stored jwt token
   const factory LoginState.loading() = _Loading;
   const factory LoginState.signedOut() = _SignedOut;
   const factory LoginState.error({
