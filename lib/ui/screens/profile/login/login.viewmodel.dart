@@ -31,7 +31,6 @@ class LoginViewModel extends RxCubit<LoginState> {
       signedOut: (_) => emit(const LoginState.signedOut()),
       // TODO change to profile screen
       signedIn: (_) {
-        print("signed in registerd");
         _router.push(const MainRoute());
       },
       noAccount: (_) {}, // TODO push to sign up screen
