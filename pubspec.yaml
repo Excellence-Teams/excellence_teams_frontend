@@ -56,6 +56,7 @@ dependencies:
 
   # http requests
   dio: ^4.0.6
+  nv_golden: ^1.0.1
 
 
 dev_dependencies:
