@@ -62,9 +62,14 @@ class _LoginLeftSideState extends State<LoginLeftSide> {
 
   @override
   Widget build(BuildContext context) {
+    final env = context.read<EnvironmentHandler>();
+    final authenticationRepository = env.map(
+      testing: (testing) => testing.byType<AuthenticationRepository>(),
+      production: (_) => context.read<AuthenticationRepository>(),
+    );
     return ChangeNotifierProvider(
       create: (context) => LoginViewModel(
-        authenticationRepository: context.read<AuthenticationRepository>(),
+        authenticationRepository: authenticationRepository,
         router: getIt<AppRouter>(),
       ),
       child: Builder(
