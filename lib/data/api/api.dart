@@ -60,7 +60,7 @@ class Api {
       signedIn: (state) => {
         'Authorization': '${state.token}',
       },
-      tokenWithoutAccount: (state) => {
+      noAccount: (state) => {
         'Authorization': '${state.token}',
       },
     );

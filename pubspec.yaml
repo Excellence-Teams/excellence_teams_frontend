@@ -52,10 +52,13 @@ dependencies:
   # viewmodel / BLoC pattern
   rx_cubit: ^0.0.1
   provider: ^6.0.3
+  flutter_bloc: ^8.0.1
 
   # http requests
   dio: ^4.0.6
 
+  # testing
+  nv_golden: ^1.0.1
 
 dev_dependencies:
   flutter_test:

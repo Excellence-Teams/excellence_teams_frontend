@@ -12,6 +12,7 @@ class ExcellenceTeamsApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
+        RepositoryProvider.value(value: const EnvironmentHandler.production()),
         ChangeNotifierProvider(
           create: (_) => AuthenticationRepository(
             api: getIt<Api>(),
