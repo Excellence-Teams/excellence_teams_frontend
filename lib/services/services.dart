@@ -5,6 +5,7 @@ export 'package:provider/provider.dart';
 // services
 export 'services_injection.dart';
 export 'firebase_authentication.service.dart';
+export 'environment.dart';
 
 // apis
 export 'package:excellence_teams_frontend/data/api/api.dart';
