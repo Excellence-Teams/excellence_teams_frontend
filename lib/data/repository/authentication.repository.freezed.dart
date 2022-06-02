@@ -52,7 +52,7 @@ mixin _$AuthenticationStatus {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_SignedOut value)? signedOut,
-    TResult Function(_NoAccount value)? tokenWithoutAccount,
+    TResult Function(_NoAccount value)? noAccount,
     TResult Function(_SignedIn value)? signedIn,
     TResult Function(_Error value)? error,
   }) =>
@@ -175,7 +175,7 @@ class _$_SignedOut implements _SignedOut {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_SignedOut value)? signedOut,
-    TResult Function(_NoAccount value)? tokenWithoutAccount,
+    TResult Function(_NoAccount value)? noAccount,
     TResult Function(_SignedIn value)? signedIn,
     TResult Function(_Error value)? error,
   }) {
@@ -325,11 +325,11 @@ class _$_NoAccount implements _NoAccount {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_SignedOut value)? signedOut,
-    TResult Function(_NoAccount value)? tokenWithoutAccount,
+    TResult Function(_NoAccount value)? noAccount,
     TResult Function(_SignedIn value)? signedIn,
     TResult Function(_Error value)? error,
   }) {
-    return tokenWithoutAccount?.call(this);
+    return noAccount?.call(this);
   }
 
   @override
@@ -499,7 +499,7 @@ class _$_SignedIn implements _SignedIn {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_SignedOut value)? signedOut,
-    TResult Function(_NoAccount value)? tokenWithoutAccount,
+    TResult Function(_NoAccount value)? noAccount,
     TResult Function(_SignedIn value)? signedIn,
     TResult Function(_Error value)? error,
   }) {
@@ -646,7 +646,7 @@ class _$_Error implements _Error {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(_SignedOut value)? signedOut,
-    TResult Function(_NoAccount value)? tokenWithoutAccount,
+    TResult Function(_NoAccount value)? noAccount,
     TResult Function(_SignedIn value)? signedIn,
     TResult Function(_Error value)? error,
   }) {
