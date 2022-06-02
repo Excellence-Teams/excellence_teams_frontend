@@ -15,6 +15,9 @@ class ApiException implements Exception {
 }
 
 class Api {
+  late final Dio _dio;
+  final _apiHost = 'localhost:8080/api/';
+
   AuthenticationRepository? _authenticationRepository;
 
   // AuthenticationRepository should only be once settable
@@ -23,17 +26,11 @@ class Api {
     _authenticationRepository ??= authenticationRepository;
   }
 
-  late final Dio dio;
-  late final BaseOptions options;
-  final apiHost = 'localhost:8080/api/';
-
   Api() {
-    dio = Dio()
-      ..options.baseUrl = apiHost
+    _dio = Dio()
+      ..options.baseUrl = _apiHost
       ..options.connectTimeout = 5000
       ..options.receiveTimeout = 3000;
-
-    options = BaseOptions();
   }
 
   Future<dynamic> get(
@@ -46,7 +43,7 @@ class Api {
         debugLogError('tried to make request without jwt token loaded');
         return;
       }
-      final response = await dio.get(
+      final response = await _dio.get(
         path,
         queryParameters: body,
         options: Options(headers: headers!),
