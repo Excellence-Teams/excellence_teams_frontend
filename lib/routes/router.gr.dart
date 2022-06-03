@@ -15,7 +15,7 @@ import 'package:flutter/material.dart' as _i7;
 
 import '../main.screen.dart' as _i1;
 import '../ui/screens/profile/profile.screen.dart' as _i4;
-import '../ui/screens/profile/sign%20up/sign_up.dart' as _i5;
+import '../ui/screens/profile/sign-up/sign_up.dart' as _i5;
 import '../ui/screens/projects/projects.screen.dart' as _i3;
 import '../ui/screens/search/search.screen.dart' as _i2;
 
