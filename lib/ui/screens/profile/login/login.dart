@@ -1,3 +1,5 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:excellence_teams_frontend/routes/router.gr.dart';
 import 'package:excellence_teams_frontend/ui/resources/colors.dart';
 import 'package:excellence_teams_frontend/ui/resources/text_styles.dart';
 import 'package:excellence_teams_frontend/ui/widgets/button.dart';
@@ -156,9 +158,8 @@ class _LoginLeftSideState extends State<LoginLeftSide> {
                 ETButton(
                   backgroundColor: ETColors.green,
                   label: 'create a new account',
-                  onClick: () {
-                    // TODO add click logic
-                  },
+                  onClick: () =>
+                      AutoRouter.of(context).push(const SignUpRoute()),
                 )
               ],
             ),
