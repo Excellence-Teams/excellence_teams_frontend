@@ -7,6 +7,23 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const LoginScreen();
+    return Flex(
+      direction: Axis.horizontal,
+      children: [
+        Flexible(
+          child: Column(
+            children: [
+              CircleAvatar(
+                radius: 80,
+                backgroundImage: AssetImage('')
+              )
+            ]
+          ),
+
+        ), 
+        
+
+      ]
+    );
   }
 }
