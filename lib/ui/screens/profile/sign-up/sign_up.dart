@@ -1,4 +1,3 @@
-//import 'package:auto_route/auto_route.dart';
 import 'package:excellence_teams_frontend/ui/resources/colors.dart';
 import 'package:excellence_teams_frontend/ui/resources/text_styles.dart';
 import 'package:excellence_teams_frontend/ui/widgets/button.dart';
@@ -6,8 +5,7 @@ import 'package:excellence_teams_frontend/ui/widgets/text.dart';
 import 'package:excellence_teams_frontend/ui/widgets/text_field.dart';
 
 import 'package:flutter/material.dart';
-
-//import '../../../../routes/router.gr.dart';
+import 'package:flutter/services.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -65,8 +63,6 @@ class _SignUpLeftSideState extends State<SignUpLeftSide> {
   final _ageController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _linkedInController = TextEditingController();
-
-  bool isChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +126,7 @@ class _SignUpLeftSideState extends State<SignUpLeftSide> {
                       child: ETTextField(
                         controller: _passwordRepeatController,
                         inputVisible: false,
-                        hintText: 'Reapeat Password',
+                        hintText: 'Repeat Password',
                         trailingIcon: const Icon(
                           Icons.lock,
                           color: ETColors.grey,
@@ -140,6 +136,9 @@ class _SignUpLeftSideState extends State<SignUpLeftSide> {
                   SizedBox(
                       width: 400,
                       child: ETTextField(
+                        inputFormatter: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         controller: _ageController,
                         hintText: 'Age (optional)',
                         trailingIcon: const Icon(

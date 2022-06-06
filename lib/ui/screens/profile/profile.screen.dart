@@ -1,7 +1,7 @@
-import 'package:excellence_teams_frontend/ui/screens/profile/sign%20up/sign_up.dart';
+import 'package:excellence_teams_frontend/ui/screens/profile/sign-up/sign_up.dart';
 import 'package:flutter/material.dart';
 
-import 'login/login.dart';
+//import 'login/login.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);

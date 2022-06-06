@@ -1,12 +1,14 @@
 import 'package:excellence_teams_frontend/ui/resources/colors.dart';
 import 'package:excellence_teams_frontend/ui/resources/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ETTextField extends StatelessWidget {
   final TextEditingController controller;
   final bool inputVisible;
   final String hintText;
   final Widget trailingIcon;
+  final List<TextInputFormatter>? inputFormatter;
 
   const ETTextField({
     Key? key,
@@ -14,6 +16,7 @@ class ETTextField extends StatelessWidget {
     this.inputVisible = true,
     required this.hintText,
     required this.trailingIcon,
+    this.inputFormatter,
   }) : super(key: key);
 
   @override
@@ -21,6 +24,7 @@ class ETTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       obscureText: !inputVisible,
+      inputFormatters: inputFormatter,
       style: ETTextStyles.montRegular.copyWith(
         color: ETColors.black,
         fontSize: 16,
