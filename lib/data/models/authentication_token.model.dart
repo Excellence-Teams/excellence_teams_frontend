@@ -6,7 +6,7 @@ part 'authentication_token.model.freezed.dart';
 class AuthenticationToken with _$AuthenticationToken {
   const factory AuthenticationToken({
     required String token,
-    required String tokenType,
+    @Default("Bearer") String tokenType,
   }) = _AuthenticationToken;
 
   const AuthenticationToken._();
