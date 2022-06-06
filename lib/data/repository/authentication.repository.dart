@@ -12,16 +12,54 @@ class AuthenticationRepository extends RxCubit<AuthenticationStatus> {
   final FirebaseAuthenticationService _authService;
   final Api _api;
 
+  final _storage = SecureStorageService();
+  final _storageKey = 'excellence_teams.auth.token';
+
+  AuthenticationToken? get _currentToken => state.mapOrNull(
+      noAccount: (noAccount) => noAccount.token,
+      signedIn: (signedIn) => signedIn.token);
+
+  bool _storeTokenOnDevice = false;
+  set storeTokenOnDevice(bool shouldStore) {
+    _storeTokenOnDevice = shouldStore;
+    if (shouldStore && _currentToken != null) {
+      _storeToken(_currentToken!);
+    } else {
+      _deleteToken();
+    }
+  }
+
   AuthenticationRepository({
     required FirebaseAuthenticationService authService,
     required Api api,
   })  : _authService = authService,
         _api = api,
-        super(const AuthenticationStatus.signedOut());
+        super(const AuthenticationStatus.signedOut()) {
+    final tokenFuture = _loadToken();
+    tokenFuture.then((token) => token != null ? _loadAccount(token) : null);
+  }
 
-  // ignore: unused_element
-  Future<void> _loadStoredToken() async {
-    // TODO load stored jwt token
+  Future<AuthenticationToken?> _loadToken() async {
+    final value = await _storage.load(
+      key: _storageKey,
+      parser: (String s) => AuthenticationToken(token: s),
+    );
+    value == null
+        ? debugLog('no authentication token loaded')
+        : debugLog('authentication token loaded ${value.token}');
+    return value;
+  }
+
+  Future<void> _storeToken(AuthenticationToken token) async {
+    _storage.store(
+      key: _storageKey,
+      value: token,
+      serializer: (AuthenticationToken t) => t.token,
+    );
+  }
+
+  Future<void> _deleteToken() async {
+    await _storage.delete(_storageKey);
   }
 
   Future<void> registerEmailPassword({
@@ -33,14 +71,15 @@ class AuthenticationRepository extends RxCubit<AuthenticationStatus> {
         email: email,
         password: password,
       );
-      final token = await user!.getIdToken();
-      emit(AuthenticationStatus.noAccount(
-        token: AuthenticationToken(
-          token: token,
-          tokenType: "Bearer",
-        ),
-      ));
-      debugLog("created user with token $token");
+      final tokenString = await user!.getIdToken();
+      final token = AuthenticationToken(token: tokenString);
+
+      emit(AuthenticationStatus.noAccount(token: token));
+      if (_storeTokenOnDevice) {
+        _storeToken(token);
+      }
+
+      debugLog("created user with token $tokenString");
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         emit(const AuthenticationStatus.error(
@@ -54,10 +93,14 @@ class AuthenticationRepository extends RxCubit<AuthenticationStatus> {
         debugLog("error: email is already in use");
       }
     } catch (e, s) {
-      debugLogError('unknown firebase error at registerEmailPassword', e, s);
       emit(const AuthenticationStatus.error(
         error: AuthenticationError.unknown,
       ));
+      debugLogError(
+        'unknown firebase error at registerEmailPassword',
+        e,
+        s,
+      );
     }
   }
 
@@ -70,14 +113,15 @@ class AuthenticationRepository extends RxCubit<AuthenticationStatus> {
         email: email,
         password: password,
       );
-      final token = await user!.getIdToken();
-      _loadAccount(
-        AuthenticationToken(
-          token: token,
-          tokenType: "Bearer",
-        ),
-      );
-      debugLog("user loaded with token $token");
+      final tokenString = await user!.getIdToken();
+      final token = AuthenticationToken(token: tokenString);
+
+      _loadAccount(token);
+      if (_storeTokenOnDevice) {
+        _storeToken(token);
+      }
+
+      debugLog("user signed in with token $tokenString");
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         emit(const AuthenticationStatus.error(
@@ -90,10 +134,14 @@ class AuthenticationRepository extends RxCubit<AuthenticationStatus> {
         debugLog("error: wrong password was inserted");
       }
     } catch (e, s) {
-      debugLogError('unknown firebase error at signInEmailPassword', e, s);
       emit(const AuthenticationStatus.error(
         error: AuthenticationError.unknown,
       ));
+      debugLogError(
+        'unknown firebase error at signInEmailPassword',
+        e,
+        s,
+      );
     }
   }
 
@@ -105,11 +153,13 @@ class AuthenticationRepository extends RxCubit<AuthenticationStatus> {
         user: user,
         token: token,
       ));
+
+      debugLog("user account loaded with id ${user.publicId}");
     } catch (e, s) {
-      debugLogError('error fetching signed in user', e, s);
       emit(const AuthenticationStatus.error(
         error: AuthenticationError.unknown,
       ));
+      debugLogError('error fetching signed in user', e, s);
     }
   }
 }
