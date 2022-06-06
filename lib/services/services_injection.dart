@@ -1,7 +1,14 @@
-import 'package:get_it/get_it.dart';
+import 'package:excellence_teams_frontend/services/services.dart';
 
 final getIt = GetIt.instance;
 
-void setupServicesInjection() {
-  // add services, API and repositories here
+void serviceInjection() {
+  getIt.registerLazySingleton<AppRouter>(() => AppRouter());
+
+  getIt.registerLazySingleton(() => Api());
+
+  // services
+  getIt.registerLazySingleton<FirebaseAuthenticationService>(
+    () => FirebaseAuthenticationService(),
+  );
 }
