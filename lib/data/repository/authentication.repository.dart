@@ -11,8 +11,8 @@ part 'authentication.repository.freezed.dart';
 class AuthenticationRepository extends RxCubit<AuthenticationStatus> {
   final FirebaseAuthenticationService _authService;
   final Api _api;
+  final SecureStorageService _storage;
 
-  final _storage = SecureStorageService();
   final _storageKey = 'excellence_teams.auth.token';
 
   AuthenticationToken? get _currentToken => state.mapOrNull(
@@ -20,6 +20,7 @@ class AuthenticationRepository extends RxCubit<AuthenticationStatus> {
       signedIn: (signedIn) => signedIn.token);
 
   bool _storeTokenOnDevice = false;
+
   set storeTokenOnDevice(bool shouldStore) {
     _storeTokenOnDevice = shouldStore;
     if (shouldStore && _currentToken != null) {
@@ -32,8 +33,10 @@ class AuthenticationRepository extends RxCubit<AuthenticationStatus> {
   AuthenticationRepository({
     required FirebaseAuthenticationService authService,
     required Api api,
+    required SecureStorageService storage,
   })  : _authService = authService,
         _api = api,
+        _storage = storage,
         super(const AuthenticationStatus.signedOut()) {
     final tokenFuture = _loadToken();
     tokenFuture.then((token) => token != null ? _loadAccount(token) : null);
