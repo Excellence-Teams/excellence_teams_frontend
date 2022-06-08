@@ -60,6 +60,7 @@ dependencies:
   # testing
   nv_golden: ^1.0.1
   flutter_secure_storage: ^5.0.2
+  mocktail: ^0.3.0
 
 dev_dependencies:
   flutter_test:
