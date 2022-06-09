@@ -42,8 +42,10 @@ class LoginViewModel extends RxCubit<LoginState> {
     required String email,
     required String password,
     required bool register,
+    required bool rememberLogin,
   }) {
     emit(const LoginState.loading());
+    _authenticationRepository.storeTokenOnDevice = rememberLogin;
     register
         ? _authenticationRepository.registerEmailPassword(
             email: email,

@@ -17,6 +17,7 @@ class ExcellenceTeamsApp extends StatelessWidget {
           create: (_) => AuthenticationRepository(
             api: getIt<Api>(),
             authService: getIt<FirebaseAuthenticationService>(),
+            storage: getIt<SecureStorageService>(),
           ),
         ),
       ],

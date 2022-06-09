@@ -58,7 +58,7 @@ class _LoginLeftSideState extends State<LoginLeftSide> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  bool isChecked = false;
+  bool _rememberLogin = false;
 
   @override
   Widget build(BuildContext context) {
@@ -123,13 +123,11 @@ class _LoginLeftSideState extends State<LoginLeftSide> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Checkbox(
-                              value: isChecked,
-                              onChanged: (value) {
-                                setState(() {
-                                  // TODO integrate viewmodel here
-                                  // TODO use isChecked value
-                                  isChecked = !isChecked;
-                                });
+                              value: _rememberLogin,
+                              onChanged: (_) {
+                                setState(
+                                  () => _rememberLogin = !_rememberLogin,
+                                );
                               },
                             ),
                             const SizedBox(
@@ -168,6 +166,7 @@ class _LoginLeftSideState extends State<LoginLeftSide> {
                           email: _emailController.text,
                           password: _passwordController.text,
                           register: false,
+                          rememberLogin: _rememberLogin,
                         ),
                       ),
                       const SizedBox(height: 14),
@@ -178,6 +177,7 @@ class _LoginLeftSideState extends State<LoginLeftSide> {
                           email: _emailController.text,
                           password: _passwordController.text,
                           register: true,
+                          rememberLogin: _rememberLogin,
                         ),
                       )
                     ],

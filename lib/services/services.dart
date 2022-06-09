@@ -6,6 +6,7 @@ export 'package:flutter_bloc/flutter_bloc.dart';
 // services
 export 'services_injection.dart';
 export 'firebase_authentication.service.dart';
+export 'secure_storage.service.dart';
 export 'environment.dart';
 
 // apis
