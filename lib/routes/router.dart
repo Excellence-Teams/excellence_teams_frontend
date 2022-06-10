@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:excellence_teams_frontend/main.screen.dart';
-import 'package:excellence_teams_frontend/ui/screens/profile/profile.screen.dart';
+import 'package:excellence_teams_frontend/ui/screens/profile/profile_details/profile.screen.dart';
 import 'package:excellence_teams_frontend/ui/screens/projects/projects.screen.dart';
 import 'package:excellence_teams_frontend/ui/screens/search/search.screen.dart';
 
