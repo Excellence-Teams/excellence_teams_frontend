@@ -4,6 +4,8 @@ import 'package:excellence_teams_frontend/ui/screens/profile/profile.screen.dart
 import 'package:excellence_teams_frontend/ui/screens/projects/projects.screen.dart';
 import 'package:excellence_teams_frontend/ui/screens/search/search.screen.dart';
 
+import '../ui/screens/profile/login/login.dart';
+
 @MaterialAutoRouter(
   replaceInRouteName: 'Screen,Route',
   routes: <AutoRoute>[
@@ -14,6 +16,7 @@ import 'package:excellence_teams_frontend/ui/screens/search/search.screen.dart';
         AutoRoute(path: '', page: SearchScreen),
         AutoRoute(path: 'projects', page: ProjectsScreen),
         AutoRoute(path: 'profile', page: ProfileScreen),
+        AutoRoute(path: 'login', page: LoginScreen),
       ],
     ),
   ],
