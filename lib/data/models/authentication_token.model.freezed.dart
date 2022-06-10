@@ -101,12 +101,13 @@ class __$$_AuthenticationTokenCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_AuthenticationToken extends _AuthenticationToken {
-  const _$_AuthenticationToken({required this.token, required this.tokenType})
+  const _$_AuthenticationToken({required this.token, this.tokenType = "Bearer"})
       : super._();
 
   @override
   final String token;
   @override
+  @JsonKey()
   final String tokenType;
 
   @override
@@ -139,7 +140,7 @@ class _$_AuthenticationToken extends _AuthenticationToken {
 abstract class _AuthenticationToken extends AuthenticationToken {
   const factory _AuthenticationToken(
       {required final String token,
-      required final String tokenType}) = _$_AuthenticationToken;
+      final String tokenType}) = _$_AuthenticationToken;
   const _AuthenticationToken._() : super._();
 
   @override

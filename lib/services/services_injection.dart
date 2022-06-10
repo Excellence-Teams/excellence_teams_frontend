@@ -8,7 +8,6 @@ void serviceInjection() {
   getIt.registerLazySingleton(() => Api());
 
   // services
-  getIt.registerLazySingleton<FirebaseAuthenticationService>(
-    () => FirebaseAuthenticationService(),
-  );
+  getIt.registerLazySingleton(() => FirebaseAuthenticationService());
+  getIt.registerLazySingleton(() => SecureStorageService());
 }
