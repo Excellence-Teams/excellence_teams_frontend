@@ -1,6 +1,6 @@
 import 'package:excellence_teams_frontend/data/repository/authentication.repository.dart';
 import 'package:excellence_teams_frontend/services/services.dart';
-import 'package:rx_cubit/rx_cubit.dart';
+import 'package:excellence_teams_frontend/ui/screens/profile/profile.viewmodel.interface.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'login.viewmodel.freezed.dart';
@@ -11,29 +11,23 @@ typedef OnUserInput = void Function({
   required bool register,
 });
 
-class LoginViewModel extends RxCubit<LoginState> {
-  final AuthenticationRepository _authenticationRepository;
-  final AppRouter _router;
-
+class LoginViewModel extends IProfileViewModel<LoginState> {
   LoginViewModel({
-    required AuthenticationRepository authenticationRepository,
-    required AppRouter router,
-  })  : _authenticationRepository = authenticationRepository,
-        _router = router,
-        super(
-          const LoginState.signedOut(),
-        ) {
-    _authenticationRepository.addListener(() => _authStatusListener);
-  }
+    required super.authenticationRepository,
+    required super.router,
+  }) : super(
+          initialState: const LoginState.signedOut(),
+        );
 
-  void _authStatusListener() {
-    _authenticationRepository.state.map(
+  @override
+  void authStatusListener() {
+    authenticationRepository.state.map(
       signedOut: (_) => emit(const LoginState.signedOut()),
-      // TODO change to profile screen
       signedIn: (_) {
-        _router.push(const MainRoute());
+        router.push(const ProfileDetailsRoute());
       },
-      noAccount: (_) {}, // TODO push to sign up screen
+      noAccount: (_) =>
+          emit(LoginState.error(error: AuthenticationError.userNotFound)),
       error: (state) => emit(LoginState.error(error: state.error)),
     );
   }
@@ -45,13 +39,13 @@ class LoginViewModel extends RxCubit<LoginState> {
     required bool rememberLogin,
   }) {
     emit(const LoginState.loading());
-    _authenticationRepository.storeTokenOnDevice = rememberLogin;
+    authenticationRepository.storeTokenOnDevice = rememberLogin;
     register
-        ? _authenticationRepository.registerEmailPassword(
+        ? authenticationRepository.registerEmailPassword(
             email: email,
             password: password,
           )
-        : _authenticationRepository.signInEmailPassword(
+        : authenticationRepository.signInEmailPassword(
             email: email,
             password: password,
           );
