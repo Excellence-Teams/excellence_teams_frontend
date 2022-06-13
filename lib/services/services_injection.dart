@@ -3,7 +3,7 @@ import 'package:excellence_teams_frontend/services/services.dart';
 final getIt = GetIt.instance;
 
 void serviceInjection() {
-  getIt.registerLazySingleton<AppRouter>(() => AppRouter());
+  getIt.registerLazySingleton(() => AppRouter());
 
   getIt.registerLazySingleton(() => Api());
 

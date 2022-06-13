@@ -68,7 +68,7 @@ class _LoginLeftSideState extends State<LoginLeftSide> {
       production: (_) => context.read<AuthenticationRepository>(),
     );
     return ChangeNotifierProvider(
-      create: (context) => LoginViewModel(
+      create: (_) => LoginViewModel(
         authenticationRepository: authenticationRepository,
         router: getIt<AppRouter>(),
       ),
