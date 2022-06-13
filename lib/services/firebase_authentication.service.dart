@@ -15,9 +15,6 @@ class FirebaseAuthenticationService {
       password: password,
     );
     final user = credential.user;
-    if (user == null) {
-      return user;
-    }
     return user;
   }
 
