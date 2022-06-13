@@ -5,6 +5,6 @@ class ProfileDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text("Profile Screen - Signed In");
+    return Text("Profile Details Screen - Signed In");
   }
 }
