@@ -15,12 +15,13 @@ class SignUpScreen extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     const breakpoint = 1000;
 
-    return Flex(
-      direction: Axis.horizontal,
-      children: [
-        const SignUpLeftSide(),
-        if (breakpoint < size.width) const SignUpRightSide(),
-      ],
+    return Scaffold(
+      body: Row(
+        children: [
+          const SignUpLeftSide(),
+          if (breakpoint < size.width) const SignUpRightSide(),
+        ],
+      ),
     );
   }
 }
