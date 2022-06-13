@@ -2,6 +2,7 @@ export 'package:sentry_flutter/sentry_flutter.dart';
 export 'package:get_it/get_it.dart';
 export 'package:provider/provider.dart';
 export 'package:flutter_bloc/flutter_bloc.dart';
+export 'package:auto_route/auto_route.dart';
 
 // services
 export 'services_injection.dart';
