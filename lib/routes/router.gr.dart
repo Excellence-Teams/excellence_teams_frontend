@@ -10,159 +10,162 @@
 //
 // ignore_for_file: type=lint
 
-import 'package:auto_route/auto_route.dart' as _i9;
-import 'package:flutter/material.dart' as _i10;
+part of 'router.dart';
 
-import '../main.screen.dart' as _i1;
-import '../ui/screens/profile/error/error.screen.dart' as _i8;
-import '../ui/screens/profile/login/login.screen.dart' as _i6;
-import '../ui/screens/profile/profile.screen.dart' as _i4;
-import '../ui/screens/profile/profile/profile_details.screen.dart' as _i5;
-import '../ui/screens/profile/sign_up/sign_up.screen.dart' as _i7;
-import '../ui/screens/projects/projects.screen.dart' as _i3;
-import '../ui/screens/search/search.screen.dart' as _i2;
-
-class AppRouter extends _i9.RootStackRouter {
-  AppRouter([_i10.GlobalKey<_i10.NavigatorState>? navigatorKey])
+class _$AppRouter extends RootStackRouter {
+  _$AppRouter(
+      {GlobalKey<NavigatorState>? navigatorKey, required this.authGuard})
       : super(navigatorKey);
 
+  final AuthGuard authGuard;
+
   @override
-  final Map<String, _i9.PageFactory> pagesMap = {
+  final Map<String, PageFactory> pagesMap = {
     MainRoute.name: (routeData) {
-      return _i9.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i1.MainScreen());
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const MainScreen());
     },
-    SearchRoute.name: (routeData) {
-      return _i9.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i2.SearchScreen());
-    },
-    ProjectsRoute.name: (routeData) {
-      return _i9.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i3.ProjectsScreen());
-    },
-    ProfileRoute.name: (routeData) {
-      return _i9.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i4.ProfileScreen());
-    },
-    ProfileDetailsRoute.name: (routeData) {
-      return _i9.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i5.ProfileDetailsScreen());
+    CreateProjectRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const CreateProjectScreen());
     },
     LoginRoute.name: (routeData) {
-      return _i9.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i6.LoginScreen());
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const LoginScreen());
     },
     SignUpRoute.name: (routeData) {
-      return _i9.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i7.SignUpScreen());
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const SignUpScreen());
     },
     ProfileErrorRoute.name: (routeData) {
-      return _i9.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i8.ProfileErrorScreen());
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const ProfileErrorScreen());
+    },
+    SearchRoute.name: (routeData) {
+      final args = routeData.argsAs<SearchRouteArgs>(
+          orElse: () => const SearchRouteArgs());
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: SearchScreen(key: args.key));
+    },
+    ProjectsRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const ProjectsScreen());
+    },
+    ProfileDetailsRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: WrappedRoute(child: const ProfileDetailsScreen()));
+    },
+    BookmarksRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const BookmarksScreen());
     }
   };
 
   @override
-  List<_i9.RouteConfig> get routes => [
-        _i9.RouteConfig(MainRoute.name, path: '/', children: [
-          _i9.RouteConfig('#redirect',
-              path: '',
-              parent: MainRoute.name,
-              redirectTo: 'profile',
-              fullMatch: true),
-          _i9.RouteConfig(SearchRoute.name,
-              path: 'search', parent: MainRoute.name),
-          _i9.RouteConfig(ProjectsRoute.name,
+  List<RouteConfig> get routes => [
+        RouteConfig(MainRoute.name, path: '/', guards: [
+          authGuard
+        ], children: [
+          RouteConfig(SearchRoute.name, path: 'search', parent: MainRoute.name),
+          RouteConfig(ProjectsRoute.name,
               path: 'projects', parent: MainRoute.name),
-          _i9.RouteConfig(ProfileRoute.name,
-              path: 'profile',
-              parent: MainRoute.name,
-              children: [
-                _i9.RouteConfig(ProfileDetailsRoute.name,
-                    path: 'me', parent: ProfileRoute.name),
-                _i9.RouteConfig(LoginRoute.name,
-                    path: 'login', parent: ProfileRoute.name),
-                _i9.RouteConfig(SignUpRoute.name,
-                    path: 'signup', parent: ProfileRoute.name),
-                _i9.RouteConfig(ProfileErrorRoute.name,
-                    path: 'error', parent: ProfileRoute.name),
-                _i9.RouteConfig('*#redirect',
-                    path: '*',
-                    parent: ProfileRoute.name,
-                    redirectTo: '',
-                    fullMatch: true)
-              ]),
-          _i9.RouteConfig('*#redirect',
-              path: '*',
-              parent: MainRoute.name,
-              redirectTo: '/',
-              fullMatch: true)
-        ])
+          RouteConfig(ProfileDetailsRoute.name,
+              path: 'profile', parent: MainRoute.name, guards: [authGuard]),
+          RouteConfig(BookmarksRoute.name,
+              path: 'bookmarks', parent: MainRoute.name)
+        ]),
+        RouteConfig(CreateProjectRoute.name, path: '/new-project'),
+        RouteConfig(LoginRoute.name, path: '/login', guards: [authGuard]),
+        RouteConfig(SignUpRoute.name, path: '/signup', guards: [authGuard]),
+        RouteConfig(ProfileErrorRoute.name, path: '/error', guards: [authGuard])
       ];
 }
 
 /// generated route for
-/// [_i1.MainScreen]
-class MainRoute extends _i9.PageRouteInfo<void> {
-  const MainRoute({List<_i9.PageRouteInfo>? children})
+/// [MainScreen]
+class MainRoute extends PageRouteInfo<void> {
+  const MainRoute({List<PageRouteInfo>? children})
       : super(MainRoute.name, path: '/', initialChildren: children);
 
   static const String name = 'MainRoute';
 }
 
 /// generated route for
-/// [_i2.SearchScreen]
-class SearchRoute extends _i9.PageRouteInfo<void> {
-  const SearchRoute() : super(SearchRoute.name, path: 'search');
+/// [CreateProjectScreen]
+class CreateProjectRoute extends PageRouteInfo<void> {
+  const CreateProjectRoute()
+      : super(CreateProjectRoute.name, path: '/new-project');
+
+  static const String name = 'CreateProjectRoute';
+}
+
+/// generated route for
+/// [LoginScreen]
+class LoginRoute extends PageRouteInfo<void> {
+  const LoginRoute() : super(LoginRoute.name, path: '/login');
+
+  static const String name = 'LoginRoute';
+}
+
+/// generated route for
+/// [SignUpScreen]
+class SignUpRoute extends PageRouteInfo<void> {
+  const SignUpRoute() : super(SignUpRoute.name, path: '/signup');
+
+  static const String name = 'SignUpRoute';
+}
+
+/// generated route for
+/// [ProfileErrorScreen]
+class ProfileErrorRoute extends PageRouteInfo<void> {
+  const ProfileErrorRoute() : super(ProfileErrorRoute.name, path: '/error');
+
+  static const String name = 'ProfileErrorRoute';
+}
+
+/// generated route for
+/// [SearchScreen]
+class SearchRoute extends PageRouteInfo<SearchRouteArgs> {
+  SearchRoute({Key? key})
+      : super(SearchRoute.name,
+            path: 'search', args: SearchRouteArgs(key: key));
 
   static const String name = 'SearchRoute';
 }
 
+class SearchRouteArgs {
+  const SearchRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'SearchRouteArgs{key: $key}';
+  }
+}
+
 /// generated route for
-/// [_i3.ProjectsScreen]
-class ProjectsRoute extends _i9.PageRouteInfo<void> {
+/// [ProjectsScreen]
+class ProjectsRoute extends PageRouteInfo<void> {
   const ProjectsRoute() : super(ProjectsRoute.name, path: 'projects');
 
   static const String name = 'ProjectsRoute';
 }
 
 /// generated route for
-/// [_i4.ProfileScreen]
-class ProfileRoute extends _i9.PageRouteInfo<void> {
-  const ProfileRoute({List<_i9.PageRouteInfo>? children})
-      : super(ProfileRoute.name, path: 'profile', initialChildren: children);
-
-  static const String name = 'ProfileRoute';
-}
-
-/// generated route for
-/// [_i5.ProfileDetailsScreen]
-class ProfileDetailsRoute extends _i9.PageRouteInfo<void> {
-  const ProfileDetailsRoute() : super(ProfileDetailsRoute.name, path: 'me');
+/// [ProfileDetailsScreen]
+class ProfileDetailsRoute extends PageRouteInfo<void> {
+  const ProfileDetailsRoute()
+      : super(ProfileDetailsRoute.name, path: 'profile');
 
   static const String name = 'ProfileDetailsRoute';
 }
 
 /// generated route for
-/// [_i6.LoginScreen]
-class LoginRoute extends _i9.PageRouteInfo<void> {
-  const LoginRoute() : super(LoginRoute.name, path: 'login');
+/// [BookmarksScreen]
+class BookmarksRoute extends PageRouteInfo<void> {
+  const BookmarksRoute() : super(BookmarksRoute.name, path: 'bookmarks');
 
-  static const String name = 'LoginRoute';
-}
-
-/// generated route for
-/// [_i7.SignUpScreen]
-class SignUpRoute extends _i9.PageRouteInfo<void> {
-  const SignUpRoute() : super(SignUpRoute.name, path: 'signup');
-
-  static const String name = 'SignUpRoute';
-}
-
-/// generated route for
-/// [_i8.ProfileErrorScreen]
-class ProfileErrorRoute extends _i9.PageRouteInfo<void> {
-  const ProfileErrorRoute() : super(ProfileErrorRoute.name, path: 'error');
-
-  static const String name = 'ProfileErrorRoute';
+  static const String name = 'BookmarksRoute';
 }

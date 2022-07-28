@@ -1,11 +1,10 @@
-import 'package:excellence_teams_frontend/data/repository/authentication.repository.dart';
-import 'package:excellence_teams_frontend/services/services.dart';
-import 'package:excellence_teams_frontend/ui/resources/colors.dart';
-import 'package:excellence_teams_frontend/ui/resources/text_styles.dart';
-import 'package:excellence_teams_frontend/ui/screens/profile/login/login.viewmodel.dart';
-import 'package:excellence_teams_frontend/ui/widgets/button.dart';
-import 'package:excellence_teams_frontend/ui/widgets/text.dart';
-import 'package:excellence_teams_frontend/ui/widgets/text_field.dart';
+import 'package:excellence_teams_client/data/repository/authentication.repository.dart';
+import 'package:excellence_teams_client/services/services.dart';
+import 'package:excellence_teams_client/ui/resources/resources.dart';
+import 'package:excellence_teams_client/ui/screens/profile/login/login.viewmodel.dart';
+import 'package:excellence_teams_client/ui/widgets/button.dart';
+import 'package:excellence_teams_client/ui/widgets/text.dart';
+import 'package:excellence_teams_client/ui/widgets/text_field.dart';
 
 import 'package:flutter/material.dart';
 
@@ -17,175 +16,208 @@ class LoginScreen extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     const breakpoint = 1000;
 
-    return Flex(
-      direction: Axis.horizontal,
-      children: [
-        const LoginLeftSide(),
-        if (breakpoint < size.width) const LoginRightSide(),
-      ],
+    return Material(
+      child: Row(
+        children: [
+          Expanded(child: const _LoginLeftSide()),
+          if (breakpoint < size.width)
+            Expanded(
+              child: const _LoginRightSide(),
+            ),
+        ],
+      ),
     );
   }
 }
 
-class LoginRightSide extends StatelessWidget {
-  const LoginRightSide({
+class _LoginRightSide extends StatelessWidget {
+  const _LoginRightSide({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: Container(
-        color: ETColors.grey,
-        child: const Center(
-          child: ETText('Hier könnte Ihre Werbung stehen!'),
+    return Container(
+      color: ETColors.grey,
+      child: Center(
+        child: Padding(
+          padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.1),
+          child: Image.asset(ETImages.logo),
         ),
       ),
     );
   }
 }
 
-class LoginLeftSide extends StatefulWidget {
-  const LoginLeftSide({
+class _LoginLeftSide extends StatefulWidget {
+  const _LoginLeftSide({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<LoginLeftSide> createState() => _LoginLeftSideState();
+  State<_LoginLeftSide> createState() => _LoginLeftSideState();
 }
 
-class _LoginLeftSideState extends State<LoginLeftSide> {
+class _LoginLeftSideState extends State<_LoginLeftSide> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   bool _rememberLogin = false;
+  bool _checkForEmptyFields = false;
 
   @override
   Widget build(BuildContext context) {
-    final env = context.read<EnvironmentHandler>();
-    final authenticationRepository = env.map(
-      testing: (testing) => testing.byType<AuthenticationRepository>(),
-      production: (_) => context.read<AuthenticationRepository>(),
-    );
     return ChangeNotifierProvider(
-      create: (_) => LoginViewModel(
-        authenticationRepository: authenticationRepository,
-        router: getIt<AppRouter>(),
+      create: (context) => LoginViewModel(
+        authenticationRepository: getIt<AuthenticationRepository>(),
+        router: context.router,
       ),
       child: Builder(
         builder: (context) {
           final model = context.watch<LoginViewModel>();
-          return Flexible(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ETText(
-                        "Welcome back",
-                        style: ETTextStyles.montSemiBold.copyWith(fontSize: 32),
-                      ),
-                      const ETText(
-                        "Welcome back! Please enter your details.",
-                        style: ETTextStyles.montBook,
-                      ),
-                      const SizedBox(height: 20),
-                      SizedBox(
-                          width: 400,
-                          child: ETTextField(
-                            controller: _emailController,
-                            hintText: 'Email',
-                            trailingIcon: const Icon(
-                              Icons.mail_outline,
-                              color: ETColors.grey,
-                            ),
-                          )),
-                      const SizedBox(height: 14),
-                      SizedBox(
-                          width: 400,
-                          child: ETTextField(
-                            controller: _passwordController,
-                            inputVisible: false,
-                            hintText: 'Password',
-                            trailingIcon: const Icon(
-                              Icons.lock,
-                              color: ETColors.grey,
-                            ),
-                          )),
-                      const SizedBox(height: 14),
-                      SizedBox(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Checkbox(
-                              value: _rememberLogin,
-                              onChanged: (_) {
-                                setState(
-                                  () => _rememberLogin = !_rememberLogin,
-                                );
-                              },
-                            ),
-                            const SizedBox(
-                              child: ETText(
-                                "Remember me",
-                                style: ETTextStyles.montRegular,
+          _checkForEmptyFields =
+              model.state.mapOrNull(fieldsEmpty: (_) => true) ?? false;
+          return SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ETText(
+                          "Welcome back",
+                          style:
+                              ETTextStyles.montSemiBold.copyWith(fontSize: 32),
+                        ),
+                        const ETText(
+                          "Welcome back! Please enter your details.",
+                          style: ETTextStyles.montBook,
+                        ),
+                        const SizedBox(height: 20),
+                        SizedBox(
+                            width: 400,
+                            child: ETTextField(
+                              controller: _emailController,
+                              hintText: 'Email',
+                              trailingIcon: Icon(
+                                Icons.mail_outline,
+                                color: _emailController.text.isEmpty &&
+                                        _checkForEmptyFields
+                                    ? ETColors.lightRed
+                                    : ETColors.grey,
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 165),
-                              // TODO add Gesture Detection here
-                              child: ETText(
-                                "Forgot password?",
-                                style: ETTextStyles.montRegular.copyWith(
-                                  decoration: TextDecoration.underline,
+                              inputMissing: _emailController.text.isEmpty &&
+                                  _checkForEmptyFields,
+                              onChange: () => setState(() {}),
+                            )),
+                        const SizedBox(height: 14),
+                        SizedBox(
+                            width: 400,
+                            child: ETTextField(
+                              controller: _passwordController,
+                              inputVisible: false,
+                              hintText: 'Password',
+                              trailingIcon: Icon(
+                                Icons.lock,
+                                color: _passwordController.text.isEmpty &&
+                                        _checkForEmptyFields
+                                    ? ETColors.lightRed
+                                    : ETColors.grey,
+                              ),
+                              inputMissing: _passwordController.text.isEmpty &&
+                                  _checkForEmptyFields,
+                              onChange: () => setState(() {}),
+                            )),
+                        const SizedBox(height: 14),
+                        Container(
+                          constraints: BoxConstraints(minWidth: 400),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Checkbox(
+                                    value: _rememberLogin,
+                                    onChanged: (_) {
+                                      setState(
+                                        () => _rememberLogin = !_rememberLogin,
+                                      );
+                                    },
+                                  ),
+                                  const SizedBox(
+                                    child: ETText(
+                                      "Remember me",
+                                      style: ETTextStyles.montRegular,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 0),
+                                child: SizedBox(
+                                  height: 20,
+                                  child: ETText(
+                                    model.state.mapOrNull(
+                                          fieldsEmpty: (_) =>
+                                              'Please fill in all fields',
+                                          unknownError: (_) =>
+                                              'An unknown error occurred, please try again!',
+                                          userNotFound: (_) => 'User not found',
+                                          wrongPassword: (_) =>
+                                              'Wrong password',
+                                        ) ??
+                                        "",
+                                    style: ETTextStyles.montBold.copyWith(
+                                      fontSize: 16,
+                                      color: ETColors.lightRed,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 14),
-                    ],
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ETButton(
-                        label: 'sign in',
-                        onClick: () => model.userInput(
-                          email: _emailController.text,
-                          password: _passwordController.text,
-                          register: false,
-                          rememberLogin: _rememberLogin,
+                        const SizedBox(height: 14),
+                      ],
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ETButton(
+                          label: 'sign in',
+                          onClick: () => model.userInput(
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                            rememberLogin: _rememberLogin,
+                          ),
+                          state: model.state.mapOrNull(
+                                  loading: (_) => ButtonState.loading(),
+                                  success: (_) => ButtonState.success()) ??
+                              ButtonState.normal(),
+                          successLabel: "signed in!",
                         ),
-                      ),
-                      const SizedBox(height: 14),
-                      ETButton(
-                        backgroundColor: ETColors.green,
-                        label: 'create a new account',
-                        onClick: () => model.userInput(
-                          email: _emailController.text,
-                          password: _passwordController.text,
-                          register: true,
-                          rememberLogin: _rememberLogin,
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ));
+                        const SizedBox(height: 14),
+                        ETButton(
+                          backgroundColor: ETColors.green,
+                          label: 'create a new account',
+                          onClick: () => model.onCreateNewAccount(),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
         },
       ),
     );

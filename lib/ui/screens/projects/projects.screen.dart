@@ -1,4 +1,4 @@
-import 'package:excellence_teams_frontend/ui/widgets/text.dart';
+import 'package:excellence_teams_client/ui/screens/projects/creating_project/creating_project.dart';
 import 'package:flutter/material.dart';
 
 class ProjectsScreen extends StatelessWidget {
@@ -6,9 +6,6 @@ class ProjectsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: const ETText("Projects"),
-      color: Colors.amber,
-    );
+    return Center(child: CreateProjectScreen());
   }
 }

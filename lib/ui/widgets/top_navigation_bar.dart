@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:excellence_teams_frontend/ui/resources/colors.dart';
-import 'package:excellence_teams_frontend/ui/resources/text_styles.dart';
-import 'package:excellence_teams_frontend/ui/widgets/text.dart';
+import 'package:excellence_teams_client/ui/resources/resources.dart';
+import 'package:excellence_teams_client/ui/widgets/text.dart';
 import 'package:flutter/material.dart';
 
 class ETTopNavigationBar extends StatelessWidget {
@@ -12,37 +11,54 @@ class ETTopNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 140,
-      decoration: const BoxDecoration(
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
         color: ETColors.white,
-        boxShadow: [BoxShadow(color: ETColors.grey, blurRadius: 10)],
+        border: Border(
+          bottom: BorderSide(
+            color: ETColors.grey.withOpacity(0.5),
+            width: 1,
+          ),
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
+          _logo(),
           InkWell(
             child: _tabText("SEARCH"),
             onTap: () => tabsRouter.setActiveIndex(0),
           ),
           InkWell(
-            child: _tabText("PROJECTS"),
+            child: _tabText("NEW PROJECT"),
             onTap: () => tabsRouter.setActiveIndex(1),
           ),
           InkWell(
-            child: _tabText("PROFILE"),
+            child: _tabText("BOOKMARKS"),
             onTap: () => tabsRouter.setActiveIndex(2),
+          ),
+          InkWell(
+            child: _tabText("PROFILE"),
+            onTap: () => tabsRouter.setActiveIndex(3),
           ),
         ],
       ),
     );
   }
 
+  Widget _logo() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Image.asset(ETImages.logo),
+    );
+  }
+
   Widget _tabText(String text) {
     return ETText(
       text,
-      style: ETTextStyles.montSemiBold.copyWith(
+      style: ETTextStyles.montBold.copyWith(
         color: ETColors.black,
-        fontSize: 25,
+        fontSize: 20,
       ),
     );
   }

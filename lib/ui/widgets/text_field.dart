@@ -1,5 +1,5 @@
-import 'package:excellence_teams_frontend/ui/resources/colors.dart';
-import 'package:excellence_teams_frontend/ui/resources/text_styles.dart';
+import 'package:excellence_teams_client/ui/resources/colors.dart';
+import 'package:excellence_teams_client/ui/resources/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -7,16 +7,20 @@ class ETTextField extends StatelessWidget {
   final TextEditingController controller;
   final bool inputVisible;
   final String hintText;
-  final Widget trailingIcon;
+  final Widget? trailingIcon;
   final List<TextInputFormatter>? inputFormatter;
+  final bool inputMissing;
+  final VoidCallback? onChange;
 
   const ETTextField({
     Key? key,
     required this.controller,
     this.inputVisible = true,
     required this.hintText,
-    required this.trailingIcon,
+    this.trailingIcon,
     this.inputFormatter,
+    this.inputMissing = false,
+    this.onChange,
   }) : super(key: key);
 
   @override
@@ -31,19 +35,19 @@ class ETTextField extends StatelessWidget {
       ),
       cursorColor: ETColors.grey,
       decoration: InputDecoration(
-        floatingLabelStyle: const TextStyle(
+        floatingLabelStyle: TextStyle(
           color: ETColors.green,
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
+          borderSide: BorderSide(
             color: ETColors.green,
             width: 1,
           ),
           borderRadius: BorderRadius.circular(10),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: ETColors.grey,
+          borderSide: BorderSide(
+            color: inputMissing ? ETColors.lightRed : ETColors.grey,
             width: 1,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -52,6 +56,7 @@ class ETTextField extends StatelessWidget {
         labelText: hintText,
         suffixIcon: trailingIcon,
       ),
+      onChanged: (_) => onChange?.call(),
     );
   }
 }

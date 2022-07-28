@@ -1,11 +1,11 @@
 {
-    "name": "exzellenz_teams_frontend",
-    "short_name": "exzellenz_teams_frontend",
+    "name": "Excellence Teams Client",
+    "short_name": "Excellence Teams",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Client for Excellence Teams",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

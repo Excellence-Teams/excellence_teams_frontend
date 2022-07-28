@@ -1,4 +1,4 @@
-import 'package:excellence_teams_frontend/ui/resources/colors.dart';
+import 'package:excellence_teams_client/ui/resources/colors.dart';
 import 'package:flutter/material.dart';
 
 class ETTextStyles {

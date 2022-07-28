@@ -1,63 +1,74 @@
-import 'package:excellence_teams_frontend/data/repository/authentication.repository.dart';
-import 'package:excellence_teams_frontend/services/services.dart';
-import 'package:excellence_teams_frontend/ui/screens/profile/profile.viewmodel.interface.dart';
+import 'package:excellence_teams_client/data/repository/authentication.repository.dart';
+import 'package:excellence_teams_client/services/services.dart';
+import 'package:excellence_teams_client/util/log.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:rx_cubit/rx_cubit.dart';
 
 part 'login.viewmodel.freezed.dart';
 
-typedef OnUserInput = void Function({
-  required String email,
-  required String password,
-  required bool register,
-});
+class LoginViewModel extends RxCubit<LoginState> {
+  final AuthenticationRepository _authenticationRepository;
+  final StackRouter _router;
 
-class LoginViewModel extends IProfileViewModel<LoginState> {
   LoginViewModel({
-    required super.authenticationRepository,
-    required super.router,
-  }) : super(
-          initialState: const LoginState.signedOut(),
-        );
+    required AuthenticationRepository authenticationRepository,
+    required StackRouter router,
+  })  : _authenticationRepository = authenticationRepository,
+        _router = router,
+        super(const LoginState.signedOut());
 
-  @override
-  void authStatusListener() {
-    authenticationRepository.state.map(
-      signedOut: (_) => emit(const LoginState.signedOut()),
-      signedIn: (_) {
-        router.push(const ProfileDetailsRoute());
-      },
-      noAccount: (_) =>
-          emit(LoginState.error(error: AuthenticationError.userNotFound)),
-      error: (state) => emit(LoginState.error(error: state.error)),
-    );
-  }
-
-  void userInput({
+  Future<void> userInput({
     required String email,
     required String password,
-    required bool register,
     required bool rememberLogin,
-  }) {
+  }) async {
     emit(const LoginState.loading());
-    authenticationRepository.storeTokenOnDevice = rememberLogin;
-    register
-        ? authenticationRepository.registerEmailPassword(
-            email: email,
-            password: password,
-          )
-        : authenticationRepository.signInEmailPassword(
-            email: email,
-            password: password,
-          );
+    _authenticationRepository.storeTokenOnDevice = rememberLogin;
+
+    if (email.isEmpty || password.isEmpty) {
+      emit(const LoginState.fieldsEmpty());
+      return;
+    }
+
+    await _authenticationRepository.signInEmailPassword(
+      email: email,
+      password: password,
+    );
+
+    emit(_authenticationRepository.state.map(
+      initial: (_) => const _Loading(),
+      signedOut: (_) => _UnknownError(),
+      signedInWithoutAccount: (_) => _UnknownError(),
+      signedIn: (_) {
+        _afterSuccess();
+        return _Success();
+      },
+      error: (error) =>
+          error.error.mapOrNull(
+            wrongPassword: (_) => _WrongPassword(),
+            userNotFound: (_) => _UserNotFound(),
+          ) ??
+          _UnknownError(),
+    ));
   }
+
+  Future<void> _afterSuccess() async {
+    await Future.delayed(const Duration(seconds: 1));
+
+    debugLog("Profile Details pushed");
+    await _router.push(const MainRoute(children: [ProfileDetailsRoute()]));
+  }
+
+  void onCreateNewAccount() => _router.push(const SignUpRoute());
 }
 
 @freezed
 class LoginState with _$LoginState {
-  // TODO add extra state if not yet checked for a stored jwt token
-  const factory LoginState.loading() = _Loading;
   const factory LoginState.signedOut() = _SignedOut;
-  const factory LoginState.error({
-    required AuthenticationError error,
-  }) = _Error;
+  const factory LoginState.loading() = _Loading;
+  const factory LoginState.fieldsEmpty() = _FieldsEmpty;
+  const factory LoginState.userNotFound() = _UserNotFound;
+  const factory LoginState.wrongPassword() = _WrongPassword;
+  const factory LoginState.unknownError() = _UnknownError;
+  const factory LoginState.success() = _Success;
 }

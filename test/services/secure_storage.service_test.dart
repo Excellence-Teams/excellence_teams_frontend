@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:excellence_teams_frontend/services/secure_storage.service.dart';
+import 'package:excellence_teams_client/services/secure_storage.service.dart';
 
 import '../et_testing/mocks.dart';
 

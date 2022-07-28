@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'profile_details.viewmodel.dart';
+part of 'profile.viewmodel.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,25 +15,25 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$ProfileDetailsState {
+mixin _$ProfileState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function() success,
+    required TResult Function(List<Project> projects, User user) success,
     required TResult Function() error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function()? success,
+    TResult Function(List<Project> projects, User user)? success,
     TResult Function()? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function()? success,
+    TResult Function(List<Project> projects, User user)? success,
     TResult Function()? error,
     required TResult orElse(),
   }) =>
@@ -63,20 +63,19 @@ mixin _$ProfileDetailsState {
 }
 
 /// @nodoc
-abstract class $ProfileDetailsStateCopyWith<$Res> {
-  factory $ProfileDetailsStateCopyWith(
-          ProfileDetailsState value, $Res Function(ProfileDetailsState) then) =
-      _$ProfileDetailsStateCopyWithImpl<$Res>;
+abstract class $ProfileStateCopyWith<$Res> {
+  factory $ProfileStateCopyWith(
+          ProfileState value, $Res Function(ProfileState) then) =
+      _$ProfileStateCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$ProfileDetailsStateCopyWithImpl<$Res>
-    implements $ProfileDetailsStateCopyWith<$Res> {
-  _$ProfileDetailsStateCopyWithImpl(this._value, this._then);
+class _$ProfileStateCopyWithImpl<$Res> implements $ProfileStateCopyWith<$Res> {
+  _$ProfileStateCopyWithImpl(this._value, this._then);
 
-  final ProfileDetailsState _value;
+  final ProfileState _value;
   // ignore: unused_field
-  final $Res Function(ProfileDetailsState) _then;
+  final $Res Function(ProfileState) _then;
 }
 
 /// @nodoc
@@ -87,8 +86,7 @@ abstract class _$$_LoadingCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_LoadingCopyWithImpl<$Res>
-    extends _$ProfileDetailsStateCopyWithImpl<$Res>
+class __$$_LoadingCopyWithImpl<$Res> extends _$ProfileStateCopyWithImpl<$Res>
     implements _$$_LoadingCopyWith<$Res> {
   __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
       : super(_value, (v) => _then(v as _$_Loading));
@@ -104,7 +102,7 @@ class _$_Loading implements _Loading {
 
   @override
   String toString() {
-    return 'ProfileDetailsState.loading()';
+    return 'ProfileState.loading()';
   }
 
   @override
@@ -120,7 +118,7 @@ class _$_Loading implements _Loading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function() success,
+    required TResult Function(List<Project> projects, User user) success,
     required TResult Function() error,
   }) {
     return loading();
@@ -130,7 +128,7 @@ class _$_Loading implements _Loading {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function()? success,
+    TResult Function(List<Project> projects, User user)? success,
     TResult Function()? error,
   }) {
     return loading?.call();
@@ -140,7 +138,7 @@ class _$_Loading implements _Loading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function()? success,
+    TResult Function(List<Project> projects, User user)? success,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -185,7 +183,7 @@ class _$_Loading implements _Loading {
   }
 }
 
-abstract class _Loading implements ProfileDetailsState {
+abstract class _Loading implements ProfileState {
   const factory _Loading() = _$_Loading;
 }
 
@@ -194,68 +192,116 @@ abstract class _$$_SuccessCopyWith<$Res> {
   factory _$$_SuccessCopyWith(
           _$_Success value, $Res Function(_$_Success) then) =
       __$$_SuccessCopyWithImpl<$Res>;
+  $Res call({List<Project> projects, User user});
+
+  $UserCopyWith<$Res> get user;
 }
 
 /// @nodoc
-class __$$_SuccessCopyWithImpl<$Res>
-    extends _$ProfileDetailsStateCopyWithImpl<$Res>
+class __$$_SuccessCopyWithImpl<$Res> extends _$ProfileStateCopyWithImpl<$Res>
     implements _$$_SuccessCopyWith<$Res> {
   __$$_SuccessCopyWithImpl(_$_Success _value, $Res Function(_$_Success) _then)
       : super(_value, (v) => _then(v as _$_Success));
 
   @override
   _$_Success get _value => super._value as _$_Success;
+
+  @override
+  $Res call({
+    Object? projects = freezed,
+    Object? user = freezed,
+  }) {
+    return _then(_$_Success(
+      projects: projects == freezed
+          ? _value._projects
+          : projects // ignore: cast_nullable_to_non_nullable
+              as List<Project>,
+      user: user == freezed
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as User,
+    ));
+  }
+
+  @override
+  $UserCopyWith<$Res> get user {
+    return $UserCopyWith<$Res>(_value.user, (value) {
+      return _then(_value.copyWith(user: value));
+    });
+  }
 }
 
 /// @nodoc
 
 class _$_Success implements _Success {
-  const _$_Success();
+  const _$_Success({required final List<Project> projects, required this.user})
+      : _projects = projects;
+
+  final List<Project> _projects;
+  @override
+  List<Project> get projects {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_projects);
+  }
+
+  @override
+  final User user;
 
   @override
   String toString() {
-    return 'ProfileDetailsState.success()';
+    return 'ProfileState.success(projects: $projects, user: $user)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Success);
+        (other.runtimeType == runtimeType &&
+            other is _$_Success &&
+            const DeepCollectionEquality().equals(other._projects, _projects) &&
+            const DeepCollectionEquality().equals(other.user, user));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_projects),
+      const DeepCollectionEquality().hash(user));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_SuccessCopyWith<_$_Success> get copyWith =>
+      __$$_SuccessCopyWithImpl<_$_Success>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function() success,
+    required TResult Function(List<Project> projects, User user) success,
     required TResult Function() error,
   }) {
-    return success();
+    return success(projects, user);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function()? success,
+    TResult Function(List<Project> projects, User user)? success,
     TResult Function()? error,
   }) {
-    return success?.call();
+    return success?.call(projects, user);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function()? success,
+    TResult Function(List<Project> projects, User user)? success,
     TResult Function()? error,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success();
+      return success(projects, user);
     }
     return orElse();
   }
@@ -295,8 +341,16 @@ class _$_Success implements _Success {
   }
 }
 
-abstract class _Success implements ProfileDetailsState {
-  const factory _Success() = _$_Success;
+abstract class _Success implements ProfileState {
+  const factory _Success(
+      {required final List<Project> projects,
+      required final User user}) = _$_Success;
+
+  List<Project> get projects => throw _privateConstructorUsedError;
+  User get user => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$$_SuccessCopyWith<_$_Success> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -306,8 +360,7 @@ abstract class _$$_ErrorCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_ErrorCopyWithImpl<$Res>
-    extends _$ProfileDetailsStateCopyWithImpl<$Res>
+class __$$_ErrorCopyWithImpl<$Res> extends _$ProfileStateCopyWithImpl<$Res>
     implements _$$_ErrorCopyWith<$Res> {
   __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
       : super(_value, (v) => _then(v as _$_Error));
@@ -323,7 +376,7 @@ class _$_Error implements _Error {
 
   @override
   String toString() {
-    return 'ProfileDetailsState.error()';
+    return 'ProfileState.error()';
   }
 
   @override
@@ -339,7 +392,7 @@ class _$_Error implements _Error {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function() success,
+    required TResult Function(List<Project> projects, User user) success,
     required TResult Function() error,
   }) {
     return error();
@@ -349,7 +402,7 @@ class _$_Error implements _Error {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function()? success,
+    TResult Function(List<Project> projects, User user)? success,
     TResult Function()? error,
   }) {
     return error?.call();
@@ -359,7 +412,7 @@ class _$_Error implements _Error {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function()? success,
+    TResult Function(List<Project> projects, User user)? success,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -404,6 +457,6 @@ class _$_Error implements _Error {
   }
 }
 
-abstract class _Error implements ProfileDetailsState {
+abstract class _Error implements ProfileState {
   const factory _Error() = _$_Error;
 }

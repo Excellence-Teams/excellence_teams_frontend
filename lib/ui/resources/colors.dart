@@ -10,4 +10,6 @@ class ETColors {
   static const wine = Color.fromRGBO(148, 52, 37, 1);
   static const lightRed = Color.fromRGBO(224, 118, 101, 1);
   static const blue = Color.fromRGBO(0, 0, 255, 1);
+
+  static const boxShadow = [BoxShadow(color: ETColors.grey, blurRadius: 10)];
 }

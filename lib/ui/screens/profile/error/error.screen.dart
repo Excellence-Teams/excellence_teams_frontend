@@ -1,3 +1,6 @@
+import 'package:excellence_teams_client/data/repository/repositories.dart';
+import 'package:excellence_teams_client/services/services.dart';
+import 'package:excellence_teams_client/ui/widgets/button.dart';
 import 'package:flutter/material.dart';
 
 class ProfileErrorScreen extends StatelessWidget {
@@ -6,6 +9,18 @@ class ProfileErrorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO redesign this screen
-    return Text("something went wrong while loading the profile ...");
+    return Material(
+        child: Column(
+      children: [
+        Text("something went wrong while loading the profile ..."),
+        ETButton(
+          label: "Login again",
+          onClick: () {
+            getIt<AuthenticationRepository>().signOut();
+            context.router.push(MainRoute(children: [LoginRoute()]));
+          },
+        )
+      ],
+    ));
   }
 }

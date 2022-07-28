@@ -1,4 +1,4 @@
-import 'package:excellence_teams_frontend/util/log.dart';
+import 'package:excellence_teams_client/util/log.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SecureStorageService {

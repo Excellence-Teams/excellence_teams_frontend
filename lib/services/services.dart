@@ -11,7 +11,7 @@ export 'secure_storage.service.dart';
 export 'environment.dart';
 
 // apis
-export 'package:excellence_teams_frontend/data/api/api.dart';
+export 'package:excellence_teams_client/data/api/api.dart';
 
 // router
-export 'package:excellence_teams_frontend/routes/router.gr.dart';
+export 'package:excellence_teams_client/routes/router.dart';

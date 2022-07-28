@@ -11,5 +11,6 @@ class AuthenticationToken with _$AuthenticationToken {
 
   const AuthenticationToken._();
 
-  String get fullString => "$tokenType $token";
+  @override
+  String toString() => "$tokenType $token";
 }

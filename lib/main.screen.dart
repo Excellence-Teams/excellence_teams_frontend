@@ -1,6 +1,5 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:excellence_teams_frontend/routes/router.gr.dart';
-import 'package:excellence_teams_frontend/ui/widgets/top_navigation_bar.dart';
+import 'package:excellence_teams_client/services/services.dart';
+import 'package:excellence_teams_client/ui/widgets/top_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
@@ -16,15 +15,16 @@ class _MainScreenState extends State<MainScreen>
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
       appBarBuilder: (_, tabsRouter) => PreferredSize(
-        preferredSize: const Size(double.infinity, 100),
+        preferredSize: const Size(double.infinity, 68),
         child: ETTopNavigationBar(
           tabsRouter: tabsRouter,
         ),
       ),
-      routes: const [
+      routes: [
         SearchRoute(),
         ProjectsRoute(),
-        ProfileRoute(),
+        BookmarksRoute(),
+        ProfileDetailsRoute(),
       ],
     );
   }

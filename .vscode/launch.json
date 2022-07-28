@@ -10,7 +10,8 @@
             "type": "dart",
             "args": [
                 "-d",
-                "chrome"
+                "chrome",
+                "--web-port=53546"
             ]
         },
         {
@@ -20,7 +21,8 @@
             "flutterMode": "profile",
             "args": [
                 "-d",
-                "chrome"
+                "chrome",                
+                "--web-port=53546"
             ]
         },
         {
@@ -30,7 +32,8 @@
             "flutterMode": "release",
             "args": [
                 "-d",
-                "chrome"
+                "chrome",
+                "--web-port=53546"
             ]
         }
     ]

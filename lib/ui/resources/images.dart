@@ -1,3 +1,3 @@
-const bild =  'assets/images/bild.jpg';
-
-
+class ETImages {
+  static const logo = 'assets/images/logo.png';
+}

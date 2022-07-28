@@ -1,4 +1,4 @@
-import 'package:excellence_teams_frontend/services/services.dart';
+import 'package:excellence_teams_client/services/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

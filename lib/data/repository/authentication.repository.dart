@@ -1,7 +1,7 @@
-import 'package:excellence_teams_frontend/data/models/authentication_token.model.dart';
-import 'package:excellence_teams_frontend/data/models/user.model.dart';
-import 'package:excellence_teams_frontend/services/services.dart';
-import 'package:excellence_teams_frontend/util/log.dart';
+import 'package:excellence_teams_client/data/models/authentication_token.model.dart';
+import 'package:excellence_teams_client/data/models/user.model.dart';
+import 'package:excellence_teams_client/services/services.dart';
+import 'package:excellence_teams_client/util/log.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:rx_cubit/rx_cubit.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -10,14 +10,16 @@ part 'authentication.repository.freezed.dart';
 
 class AuthenticationRepository extends RxCubit<AuthenticationStatus> {
   final FirebaseAuthenticationService _authService;
-  final Api _api;
   final SecureStorageService _storage;
 
   final _storageKey = 'excellence_teams.auth.token';
 
+  User? get user => state.mapOrNull(signedIn: (state) => state.user);
+
   AuthenticationToken? get _currentToken => state.mapOrNull(
-      noAccount: (noAccount) => noAccount.token,
-      signedIn: (signedIn) => signedIn.token);
+        signedInWithoutAccount: (noAccount) => noAccount.token,
+        signedIn: (signedIn) => signedIn.token,
+      );
 
   bool _storeTokenOnDevice = false;
 
@@ -30,16 +32,21 @@ class AuthenticationRepository extends RxCubit<AuthenticationStatus> {
     }
   }
 
-  AuthenticationRepository({
-    required FirebaseAuthenticationService authService,
-    required Api api,
-    required SecureStorageService storage,
-  })  : _authService = authService,
-        _api = api,
-        _storage = storage,
-        super(const AuthenticationStatus.signedOut()) {
+  AuthenticationRepository([
+    FirebaseAuthenticationService? authService,
+    SecureStorageService? storage,
+  ])  : _authService = authService ?? getIt<FirebaseAuthenticationService>(),
+        _storage = storage ?? getIt<SecureStorageService>(),
+        super(const _Initial()) {
     final tokenFuture = _loadToken();
-    tokenFuture.then((token) => token != null ? _loadAccount(token) : null);
+    tokenFuture.then((token) {
+      if (token != null) {
+        emit(_SignedInWithoutAccount(token: token));
+        return _loadAccount(token);
+      } else {
+        emit(_SignedOut());
+      }
+    });
   }
 
   Future<AuthenticationToken?> _loadToken() async {
@@ -54,7 +61,7 @@ class AuthenticationRepository extends RxCubit<AuthenticationStatus> {
   }
 
   Future<void> _storeToken(AuthenticationToken token) async {
-    _storage.store(
+    return _storage.store(
       key: _storageKey,
       value: token,
       serializer: (AuthenticationToken t) => t.token,
@@ -77,27 +84,27 @@ class AuthenticationRepository extends RxCubit<AuthenticationStatus> {
       final tokenString = await user!.getIdToken();
       final token = AuthenticationToken(token: tokenString);
 
-      emit(AuthenticationStatus.noAccount(token: token));
+      emit(_SignedInWithoutAccount(token: token));
       if (_storeTokenOnDevice) {
-        _storeToken(token);
+        await _storeToken(token);
       }
 
       debugLog("created user with token $tokenString");
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        emit(const AuthenticationStatus.error(
-          error: AuthenticationError.weakPassword,
+        emit(const _Error(
+          error: _WeakPassword(),
         ));
         debugLog("error: user inserted a weak password");
       } else if (e.code == 'email-already-in-use') {
-        emit(const AuthenticationStatus.error(
-          error: AuthenticationError.emailInUse,
+        emit(const _Error(
+          error: _EmailInUse(),
         ));
         debugLog("error: email is already in use");
       }
     } catch (e, s) {
-      emit(const AuthenticationStatus.error(
-        error: AuthenticationError.unknown,
+      emit(const _Error(
+        error: _UnknownError(),
       ));
       debugLogError(
         'unknown firebase error at registerEmailPassword',
@@ -118,27 +125,28 @@ class AuthenticationRepository extends RxCubit<AuthenticationStatus> {
       );
       final tokenString = await user!.getIdToken();
       final token = AuthenticationToken(token: tokenString);
-
-      _loadAccount(token);
+      emit(_SignedInWithoutAccount(token: token));
+      await _loadAccount(token);
       if (_storeTokenOnDevice) {
-        _storeToken(token);
+        await _storeToken(token);
       }
 
       debugLog("user signed in with token $tokenString");
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        emit(const AuthenticationStatus.error(
-          error: AuthenticationError.userNotFound,
+        emit(const _Error(
+          error: _UserNotFound(),
         ));
         debugLog("error: user not found");
       } else if (e.code == 'wrong-password') {
-        emit(const AuthenticationStatus.error(
-            error: AuthenticationError.wrongPassword));
+        emit(const _Error(
+          error: _WrongPassword(),
+        ));
         debugLog("error: wrong password was inserted");
       }
     } catch (e, s) {
-      emit(const AuthenticationStatus.error(
-        error: AuthenticationError.unknown,
+      emit(const _Error(
+        error: _UnknownError(),
       ));
       debugLogError(
         'unknown firebase error at signInEmailPassword',
@@ -150,30 +158,36 @@ class AuthenticationRepository extends RxCubit<AuthenticationStatus> {
 
   Future<void> _loadAccount(AuthenticationToken token) async {
     try {
-      final response = await _api.get('profile/getOwnProfile');
-      final user = User.fromMap(response.data);
-      emit(AuthenticationStatus.signedIn(
+      final response = await getIt<Api>().get('profile/getOwnProfile');
+      final user = User.fromJson(response);
+      emit(_SignedIn(
         user: user,
         token: token,
       ));
 
       debugLog("user account loaded with id ${user.publicId}");
     } catch (e, s) {
-      emit(const AuthenticationStatus.error(
-        error: AuthenticationError.unknown,
+      emit(const _Error(
+        error: _UnknownError(),
       ));
       debugLogError('error fetching signed in user', e, s);
     }
+  }
+
+  Future<void> signOut() async {
+    await _deleteToken();
+    emit(_SignedOut());
   }
 }
 
 @freezed
 class AuthenticationStatus with _$AuthenticationStatus {
+  const factory AuthenticationStatus.initial() = _Initial;
   const factory AuthenticationStatus.signedOut() = _SignedOut;
 
-  const factory AuthenticationStatus.noAccount({
+  const factory AuthenticationStatus.signedInWithoutAccount({
     required AuthenticationToken token,
-  }) = _NoAccount;
+  }) = _SignedInWithoutAccount;
 
   const factory AuthenticationStatus.signedIn({
     required User user,
@@ -185,10 +199,11 @@ class AuthenticationStatus with _$AuthenticationStatus {
   }) = _Error;
 }
 
-enum AuthenticationError {
-  unknown,
-  weakPassword,
-  emailInUse,
-  userNotFound,
-  wrongPassword,
+@freezed
+class AuthenticationError with _$AuthenticationError {
+  const factory AuthenticationError.unknown() = _UnknownError;
+  const factory AuthenticationError.weakPassword() = _WeakPassword;
+  const factory AuthenticationError.emailInUse() = _EmailInUse;
+  const factory AuthenticationError.userNotFound() = _UserNotFound;
+  const factory AuthenticationError.wrongPassword() = _WrongPassword;
 }

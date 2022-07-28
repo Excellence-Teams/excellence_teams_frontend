@@ -1,4 +1,4 @@
-import 'package:excellence_teams_frontend/services/services.dart';
+import 'package:excellence_teams_client/services/services.dart';
 import 'package:nv_golden/nv_golden.dart';
 
 extension GoldenWrapper on NvWidgetWrapper {

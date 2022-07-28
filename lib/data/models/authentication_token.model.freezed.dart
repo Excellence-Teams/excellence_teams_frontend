@@ -111,11 +111,6 @@ class _$_AuthenticationToken extends _AuthenticationToken {
   final String tokenType;
 
   @override
-  String toString() {
-    return 'AuthenticationToken(token: $token, tokenType: $tokenType)';
-  }
-
-  @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&

@@ -1,4 +1,4 @@
-import 'package:excellence_teams_frontend/ui/screens/profile/sign_up/sign_up.screen.dart';
+import 'package:excellence_teams_client/ui/screens/profile/sign_up/sign_up.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nv_golden/nv_golden.dart';

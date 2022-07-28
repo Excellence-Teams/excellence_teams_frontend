@@ -1,46 +1,32 @@
-import 'package:excellence_teams_frontend/util/log.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'user.model.freezed.dart';
+part 'user.model.g.dart';
 
 @freezed
 class User with _$User {
   const factory User({
-    required int publicId,
+    required String publicId,
     required String? profilePicture,
     required String name,
+    required String email,
     required int? age,
-    required List<String> degrees,
-    required List<String> skills,
+    required List<String>? degrees,
+    required List<String>? skills,
+    required List<String>? interests,
     required String? description,
     required String? linkedIn,
     required String? website,
-    required List<String> languages,
+    required List<String>? languages,
     required int? minAvailableTime,
     required int? maxAvailableTime,
   }) = _User;
 
   const User._();
 
-  static User fromMap(Map<String, dynamic> map) {
-    try {
-      return User(
-        publicId: map['publicId'],
-        profilePicture: map['profilePicture'],
-        name: map['name'],
-        age: map['age'],
-        degrees: map['degrees'],
-        skills: map['skills'],
-        description: map['description'],
-        linkedIn: map['linkedIn'],
-        website: map['website'],
-        languages: map['languages'],
-        minAvailableTime: map['minAvailableTime'],
-        maxAvailableTime: map['maxAvailableTime'],
-      );
-    } catch (e, s) {
-      debugLogError('error parsing user object', e, s);
-      rethrow;
-    }
-  }
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
+  @override
+  String toString() =>
+      'name: $name \nemail: $email ${age != null ? '\nage: $age' : ''} ';
 }

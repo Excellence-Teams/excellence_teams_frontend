@@ -1,8 +1,9 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
-import 'package:excellence_teams_frontend/data/repository/authentication.repository.dart';
-import 'package:excellence_teams_frontend/util/log.dart';
+import 'package:excellence_teams_client/data/repository/authentication.repository.dart';
+import 'package:excellence_teams_client/services/services.dart';
+import 'package:excellence_teams_client/util/log.dart';
+import 'package:http/http.dart' as http;
 
 class ApiException implements Exception {
   final int statusCode;
@@ -15,54 +16,76 @@ class ApiException implements Exception {
 }
 
 class Api {
-  late final Dio _dio;
-  final _apiHost = 'localhost:8080/api/';
+  final _apiHost = 'http://localhost:8080/api/';
+  final AuthenticationRepository _authenticationRepository;
 
-  AuthenticationRepository? _authenticationRepository;
+  Api([AuthenticationRepository? authenticationRepository])
+      : _authenticationRepository =
+            authenticationRepository ?? getIt<AuthenticationRepository>();
 
-  // AuthenticationRepository should only be once settable
-  set authenticationRepository(
-      AuthenticationRepository? authenticationRepository) {
-    _authenticationRepository ??= authenticationRepository;
-  }
-
-  Api() {
-    _dio = Dio()
-      ..options.baseUrl = _apiHost
-      ..options.connectTimeout = 5000
-      ..options.receiveTimeout = 3000;
-  }
-
-  Future<dynamic> get(
-    String path, {
-    Map<String, dynamic>? body,
-  }) async {
+  Future<dynamic> get(String path, {bool useHeaders = true}) async {
     try {
-      final headers = _getHeaders();
-      if (headers != null) {
-        debugLogError('tried to make request without jwt token loaded');
+      final headers = _getHeaders(useAuth: useHeaders);
+      if (headers == null) {
         return;
       }
-      final response = await _dio.get(
-        path,
-        queryParameters: body,
-        options: Options(headers: headers!),
+      final fullPath = Uri.parse(_apiHost + path);
+      final response = await http.get(
+        fullPath,
+        headers: headers,
       );
-      debugLog("called GET $path with body $body and got response $response");
-      return json.decode(response.data);
+      debugLog("called GET $path and got response $response");
+      return json.decode(response.body);
     } catch (e, s) {
       debugLogError('error in GET request with path $path', e, s);
     }
   }
 
-  Map<String, dynamic>? _getHeaders() {
-    return _authenticationRepository?.state.mapOrNull(
-      signedIn: (state) => {
-        'Authorization': '${state.token}',
-      },
-      noAccount: (state) => {
-        'Authorization': '${state.token}',
-      },
+  Future<dynamic> post({
+    required String path,
+    required Map<String, dynamic> body,
+    bool useHeaders = true,
+  }) async {
+    try {
+      final headers = _getHeaders(useAuth: useHeaders);
+      if (headers == null) {
+        return;
+      }
+      final fullPath = Uri.parse(_apiHost + path);
+      final response = await http.post(
+        fullPath,
+        body: json.encode(body),
+        headers: headers,
+      );
+      debugLog("called POST $path with body $body and got response $response");
+      return json.decode(response.body);
+    } catch (e, s) {
+      debugLogError('error in POST request with path $path', e, s);
+    }
+  }
+
+  Map<String, String>? _getHeaders({bool useAuth = true}) {
+    if (!useAuth) {
+      return {
+        'accept': "*/*",
+        'Content-Type': 'application/json',
+      };
+    }
+
+    final token = _authenticationRepository.state.mapOrNull(
+      signedIn: (state) => state.token.toString(),
+      signedInWithoutAccount: (state) => state.token.toString(),
     );
+
+    if (token == null) {
+      debugLogError('jwt required, but none available');
+      return null;
+    }
+
+    return {
+      'Authorization': token,
+      'accept': "*/*",
+      'Content-Type': 'application/json',
+    };
   }
 }
